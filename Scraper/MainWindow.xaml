@@ -1,0 +1,79 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        x:Class="Scraper.MainWindow"
+        xmlns:model="clr-namespace:Scraper.BAL;assembly=Scraper.BAL"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=model:MainViewModel}"
+        Title="爬网-淘宝" >
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Header="代理服务器（若代理为空则使用本地）"  Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"   Margin="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Button x:Name="btnGetProxy" Grid.Column="0" Grid.Row="0" Content="刷新代理"  VerticalAlignment="Center" HorizontalAlignment="Right" Command="{Binding GetProxies}"/>
+                <ScrollViewer x:Name="scrList" Grid.Column="0" Grid.Row="1"  Margin="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"  PanningMode="VerticalOnly">
+                    <WrapPanel x:Name="wPanel"   Orientation="Horizontal" HorizontalAlignment="Center">
+                        <ItemsControl  ItemsSource="{Binding IEProxies,Mode=TwoWay}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="{Binding IP}" Grid.Column="0"/>
+                                        <Label Content="{Binding Port}" Grid.Column="1"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </WrapPanel>
+                </ScrollViewer>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="爬行参数"   Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Margin="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="用户名"  Grid.Column="0" Grid.Row="0" Margin="5"/>
+                <Label Content="密码"  Grid.Column="0" Grid.Row="1" Margin="5"/>
+
+                <TextBox  Grid.Column="1" Grid.Row="0"  Width="250" Margin="5"/>
+                <TextBox  Grid.Column="1" Grid.Row="1"  Width="250" Margin="5"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox  Header="网页浏览"   Grid.Column="1" Grid.Row="1" Margin="5">
+
+        </GroupBox>
+
+        <GroupBox  Header="爬行结果"   Grid.Column="2" Grid.Row="1" Margin="5">
+
+        </GroupBox>
+    </Grid>
+</Window>

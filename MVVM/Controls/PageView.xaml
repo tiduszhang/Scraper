@@ -1,0 +1,66 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             x:Name="controlBase" x:Class="MVVM.Controls.PageView"
+             mc:Ignorable="d" >
+    <WrapPanel  DataContext="{Binding PageViewModel, ElementName=controlBase}">
+        <TextBlock x:Name="lblinfo"  
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			Text="{Binding PageInfo}"
+			TextAlignment="Right" />
+        <Button x:Name="btnFirst" 
+			VerticalAlignment="Center"
+			Content="首页"
+            IsEnabled="{Binding CanPrev}"
+			Style="{DynamicResource MaterialDesignFlatButton}"
+            Command="{Binding ChangePage, ElementName=controlBase, Mode=OneWay}"
+            CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+        <Button x:Name="btnPrev" 
+			VerticalAlignment="Center"
+			Content="上一页"
+            IsEnabled="{Binding CanPrev}"
+			Style="{DynamicResource MaterialDesignFlatButton}"
+            Command="{Binding ChangePage, ElementName=controlBase, Mode=OneWay}"
+            CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+        <Button x:Name="btnNext" 
+			VerticalAlignment="Center"
+			Content="下一页"
+            IsEnabled="{Binding CanNext}"
+			Style="{DynamicResource MaterialDesignFlatButton}"
+            Command="{Binding ChangePage, ElementName=controlBase, Mode=OneWay}"
+            CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+        <Button x:Name="btnLast" 
+			VerticalAlignment="Center"
+			Content="末页"
+            IsEnabled="{Binding CanNext}"
+			Style="{DynamicResource MaterialDesignFlatButton}"
+            Command="{Binding ChangePage, ElementName=controlBase, Mode=OneWay}"
+            CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+        <Label x:Name="label3" 
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			Content="       第" />
+        <TextBox x:Name="txtCurrentPage" Width="40"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+            Text="{Binding PageIndex}"
+            IsEnabled="{Binding CanGo}" />
+        <Label x:Name="label2" 
+			Margin="0,0,5,0"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			Content="页" />
+
+        <Button x:Name="btnGo" 
+			VerticalAlignment="Center"
+			Content="转到"
+			Style="{DynamicResource MaterialDesignFlatButton}"
+            IsEnabled="{Binding CanGo}"
+            Command="{Binding ChangePage, ElementName=controlBase, Mode=OneWay}"
+            CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}" />
+    </WrapPanel>
+</UserControl>

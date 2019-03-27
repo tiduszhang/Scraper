@@ -1,0 +1,446 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"  
+                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+                    mc:Ignorable="d">
+
+    <!--  *********************************  RESOURCES  *********************************  -->
+    <ResourceDictionary.MergedDictionaries>
+
+        <!-- MahApps -->
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+
+        <!-- Material Design -->
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+
+        <!-- 颜色设置 -->
+
+        <!--
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Yellow.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Yellow.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Amber.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Amber.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepOrange.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.DeepOrange.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.LightBlue.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.LightBlue.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Teal.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Teal.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Cyan.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Cyan.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Pink.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Pink.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Green.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Green.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.DeepPurple.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Indigo.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Indigo.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.LightGreen.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.LightGreen.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Blue.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Lime.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Red.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Red.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Orange.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Orange.xaml" />
+        
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Purple.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Purple.xaml" />
+
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.BlueGrey.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Grey.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Brown.xaml" />
+        
+        -->
+
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.LightBlue.xaml" />
+
+        <!-- 颜色设置 -->
+
+
+
+        <!-- Material Design: MahApps Compatibility -->
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Defaults.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml" />
+
+        <!-- Dragablz Material Design -->
+        <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/MaterialDesign.xaml"/>
+
+        <!-- CustomControl -->
+        <ResourceDictionary Source="/MaterialDesign;component/CustomControl.xaml"/>
+
+    </ResourceDictionary.MergedDictionaries>
+
+
+    <!-- MahApps Brushes -->
+    <SolidColorBrush x:Key="HighlightBrush" Color="{DynamicResource Primary700}"/>
+    <SolidColorBrush x:Key="AccentBaseColorBrush" Color="{DynamicResource Primary600}" />
+    <SolidColorBrush x:Key="AccentColorBrush" Color="{DynamicResource Primary500}"/>
+    <SolidColorBrush x:Key="AccentColorBrush2" Color="{DynamicResource Primary400}"/>
+    <SolidColorBrush x:Key="AccentColorBrush3" Color="{DynamicResource Primary300}"/>
+    <SolidColorBrush x:Key="AccentColorBrush4" Color="{DynamicResource Primary200}"/>
+    <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{DynamicResource Primary700}"/>
+    <SolidColorBrush x:Key="AccentSelectedColorBrush" Color="{DynamicResource Primary500Foreground}"/>
+    <LinearGradientBrush x:Key="ProgressBrush" EndPoint="0.001,0.5" StartPoint="1.002,0.5">
+        <GradientStop Color="{DynamicResource Primary700}" Offset="0"/>
+        <GradientStop Color="{DynamicResource Primary300}" Offset="1"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="CheckmarkFill" Color="{DynamicResource Primary500}"/>
+    <SolidColorBrush x:Key="RightArrowFill" Color="{DynamicResource Primary500}"/>
+    <SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{DynamicResource Primary500Foreground}"/>
+    <SolidColorBrush x:Key="IdealForegroundDisabledBrush" Color="{DynamicResource Primary500}" Opacity="0.4"/>
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchBrush.Win10" Color="{DynamicResource Primary500}" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchMouseOverBrush.Win10" Color="{DynamicResource Primary400}" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorCheckedBrush.Win10" Color="{DynamicResource Primary500Foreground}" />
+
+    <!-- MahApps Brushes -->
+
+    <!--<Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MahAppsTabablzControlStyle}" />-->
+    <!--<Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}"  />-->
+    <!--MaterialDesignAlternateTabablzControlStyle-->
+
+    <!-- Dragablz Design -->
+    <!--<Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}"  />-->
+    <!-- Dragablz Design -->
+
+    <Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" >
+        <Setter Property="Template" Value="{DynamicResource MyTabablzControlControlTemplate}" />
+    </Style>
+
+    <Style x:Key="MyMaterialDesignScrollBarButton" TargetType="{x:Type RepeatButton}">
+        <!--<Setter Property="OverridesDefaultStyle" Value="True"/>-->
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+        <Setter Property="Control.BorderBrush" Value="Transparent"/>
+        <Setter Property="Control.Background" Value="Transparent"/>
+        <Setter Property="Control.BorderThickness" Value="1"/>
+        <Setter Property="Control.HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Control.VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Control.HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Control.VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Control.Padding" Value="0"/>
+        <Setter Property="UIElement.Focusable" Value="False"/>
+        <Setter Property="Control.IsTabStop" Value="False"/>
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Border Name="border" 
+                                 BorderBrush="{TemplateBinding Control.BorderBrush}"
+                                 BorderThickness="1"
+                                 Background="{TemplateBinding Control.Background}"
+                                 SnapsToDevicePixels="True"  >
+                        <ContentPresenter Name="contentPresenter"
+                                         Focusable="False"
+                                         Margin="{TemplateBinding Control.Padding}"
+                                         SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+                                         HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                                         VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Value="{DynamicResource MaterialDesignDivider}" Property="Control.Background"/>
+                            <Setter Value="{DynamicResource MaterialDesignDivider}" Property="Control.BorderBrush"/>
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Value="{DynamicResource MaterialDesignDivider}" Property="Control.Background"/>
+                            <Setter Value="{DynamicResource MaterialDesignDivider}" Property="Control.BorderBrush"/>
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter TargetName="contentPresenter"
+                                             Property="UIElement.Opacity"
+                                             Value="0.56"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="MyHorizontalScrollBar" TargetType="{x:Type ScrollBar}">
+        <Grid  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <RepeatButton Grid.Column="0"
+                         Style="{DynamicResource MyMaterialDesignScrollBarButton}" 
+                         Command="ScrollBar.LineLeftCommand"  >
+                <!--<Path  Data="M 0 4 L 4 8 L 4 0 Z" Stroke="{TemplateBinding Control.Foreground}"/>-->
+                <materialDesign:PackIcon Kind="ChevronLeft" Foreground="{TemplateBinding Control.Foreground}" />
+            </RepeatButton>
+            <Track Name="PART_Track"
+                         Grid.Column="1"
+                         IsDirectionReversed="True" Visibility="Collapsed">
+            </Track>
+            <RepeatButton Grid.Column="2"
+                         Style="{DynamicResource MyMaterialDesignScrollBarButton}" 
+                         Command="ScrollBar.LineRightCommand" >
+                <!--<Path  Data="M 0 0 L 0 8 L 4 4 Z" Stroke="{TemplateBinding Control.Foreground}"/>-->
+                <materialDesign:PackIcon Kind="ChevronRight" Foreground="{TemplateBinding Control.Foreground}"  />
+            </RepeatButton>
+        </Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="MyVerticalScrollBar" TargetType="{x:Type ScrollBar}">
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <RepeatButton Grid.Row="0"
+                         Style="{DynamicResource MyMaterialDesignScrollBarButton}"  
+                         Command="ScrollBar.LineUpCommand" >
+                <!--<Path  Data="M 0 4 L 8 4 L 4 0 Z" Stroke="{TemplateBinding Control.Foreground}"/>-->
+                <materialDesign:PackIcon Kind="ChevronUp" Foreground="{TemplateBinding Control.Foreground}" />
+            </RepeatButton>
+            <Track Name="PART_Track"
+                         Grid.Row="1"
+                         IsDirectionReversed="True" Visibility="Collapsed">
+            </Track>
+            <RepeatButton Grid.Row="2"
+                         Style="{DynamicResource MyMaterialDesignScrollBarButton}" 
+                         Command="ScrollBar.LineDownCommand" >
+                <!--<Path  Data="M 0 0 L 4 4 L 8 0 Z" Stroke="{TemplateBinding Control.Foreground}"/>-->
+                <materialDesign:PackIcon Kind="ChevronDown" Foreground="{TemplateBinding Control.Foreground}" />
+            </RepeatButton>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="MyTabablzScrollViewerControlTemplate" TargetType="{x:Type ScrollViewer}" >
+        <Grid Name="Grid" Background="{TemplateBinding Control.Background}"  >
+            <!--<Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>-->
+            <ScrollContentPresenter Name="PART_ScrollContentPresenter"
+                             CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
+                             CanHorizontallyScroll="False"
+                             CanVerticallyScroll="False"
+                             ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                             Content="{TemplateBinding ContentControl.Content}"
+                         
+                             Margin="{TemplateBinding Control.Padding}"/>
+            <!--Grid.Column="1" Grid.Row="1"-->
+            <ScrollBar Name="PART_VerticalScrollBar"
+                             AutomationProperties.AutomationId="VerticalScrollBar"  
+                             Cursor="Arrow"
+                             Maximum="{TemplateBinding ScrollViewer.ScrollableHeight}"
+                             Minimum="0"
+                             Visibility="{TemplateBinding ScrollViewer.ComputedVerticalScrollBarVisibility}"
+                             ViewportSize="{TemplateBinding ScrollViewer.ViewportHeight}"  
+                             Margin="4,5,0,5" Template="{DynamicResource MyVerticalScrollBar}"
+                             Value="{Binding VerticalOffset,Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" />
+            <!--Grid.Column="1"
+                             Grid.Row="0"
+                             Grid.RowSpan="3"-->
+            <ScrollBar Name="PART_HorizontalScrollBar"
+                             AutomationProperties.AutomationId="HorizontalScrollBar"
+                             Cursor="Arrow"
+                             Maximum="{TemplateBinding ScrollViewer.ScrollableWidth}"
+                             Minimum="0"
+                             Orientation="Horizontal"
+                             Visibility="{TemplateBinding ScrollViewer.ComputedHorizontalScrollBarVisibility}"
+                             ViewportSize="{TemplateBinding ScrollViewer.ViewportWidth}" Height="38"
+                             Margin="5,0,5,4" Template="{DynamicResource MyHorizontalScrollBar}"
+                             Value="{Binding HorizontalOffset,Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}"/>
+            <!--Grid.Column="0"
+                             Grid.ColumnSpan="3"
+                             Grid.Row="1"-->
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger SourceName="PART_HorizontalScrollBar" Property="Visibility" Value="Visible">
+                <Setter Property="Padding" Value="30,0"/>
+            </Trigger>
+            <Trigger SourceName="PART_VerticalScrollBar" Property="Visibility" Value="Visible">
+                <Setter Property="Padding" Value="0,30"/>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition SourceName="PART_HorizontalScrollBar" Property="Visibility" Value="Collapsed" />
+                    <Condition SourceName="PART_VerticalScrollBar" Property="Visibility" Value="Collapsed" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Padding" Value="0,0"/>
+            </MultiTrigger>
+
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="MyTabablzDragablzItemsControlStyle" TargetType="{x:Type dragablz:DragablzItemsControl}">
+        <Setter Property="FrameworkElement.HorizontalAlignment" Value="Left"/>
+        <Setter Property="FrameworkElement.VerticalAlignment" Value="Top"/>
+        <Setter Property="ItemsControl.ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <Canvas IsItemsHost="True"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type dragablz:DragablzItemsControl}">
+                    <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+                                 Padding="{TemplateBinding Control.Padding}"
+                                 BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                 Background="{TemplateBinding Panel.Background}"
+                                 SnapsToDevicePixels="True">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                         VerticalScrollBarVisibility="Auto"
+                                         Width="{TemplateBinding FrameworkElement.ActualWidth}"
+                                         Height="{TemplateBinding FrameworkElement.ActualHeight}"
+                                         Template="{StaticResource MyTabablzScrollViewerControlTemplate}"  >
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top" 
+                                                 Width="{TemplateBinding dragablz:DragablzItemsControl.ItemsPresenterWidth}"
+                                                 Height="{TemplateBinding dragablz:DragablzItemsControl.ItemsPresenterHeight}"/>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="MyTabablzControlControlTemplate" TargetType="{x:Type dragablz:TabablzControl}">
+        <Grid Name="templateRoot"
+                                 ClipToBounds="True"
+                                 SnapsToDevicePixels="True"
+                                 KeyboardNavigation.TabNavigation="Local">
+            <Grid.RowDefinitions>
+                <RowDefinition Name="RowDefinition0" Height="Auto"/>
+                <RowDefinition Name="RowDefinition1" Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Name="contentPanel"
+                                         BorderBrush="{TemplateBinding Control.BorderBrush}"
+                                         BorderThickness="{TemplateBinding Control.BorderThickness}"
+                                         Background="{TemplateBinding Control.Background}"
+                                         Grid.Column="0"
+                                         KeyboardNavigation.DirectionalNavigation="Contained"
+                                         Grid.Row="1"
+                                         KeyboardNavigation.TabIndex="2"
+                                         KeyboardNavigation.TabNavigation="Local"
+                                         Margin="0 -1 0 0">
+                <Grid Name="PART_ItemsHolder"/>
+            </Border>
+            <Grid Name="HeaderContainerGrid"
+                                         Column="0"
+                                         Row="0">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource StandardEmbeddedButtonStyle}"/>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Background="{TemplateBinding Control.BorderBrush}" Grid.ColumnSpan="4">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="5"
+                                                             ShadowDepth="2"
+                                                             Direction="270"
+                                                             Opacity=".5"/>
+                    </Border.Effect>
+                </Border>
+                <ContentControl Name="PrefixContentControl"
+                                                 Grid.Column="0"
+                                                 Content="{TemplateBinding dragablz:TabablzControl.HeaderPrefixContent}"
+                                                 ContentStringFormat="{TemplateBinding dragablz:TabablzControl.HeaderPrefixContentStringFormat}"
+                                                 ContentTemplate="{TemplateBinding dragablz:TabablzControl.HeaderPrefixContentStringFormat}"
+                                                 ContentTemplateSelector="{TemplateBinding dragablz:TabablzControl.HeaderPrefixContentTemplateSelector}"/>
+                <dragablz:DragablzItemsControl x:Name="PART_HeaderItemsControl"
+                                                 Grid.Column="1"
+                                                 FixedItemCount="{TemplateBinding dragablz:TabablzControl.FixedHeaderCount}"
+                                                 ItemContainerStyle="{TemplateBinding ItemsControl.ItemContainerStyle}"
+                                                 ItemsOrganiser="{TemplateBinding dragablz:TabablzControl.HeaderItemsOrganiser}"
+                                                 KeyboardNavigation.TabIndex="1"
+                                                 Panel.ZIndex="1"
+                                                 ItemTemplate="{TemplateBinding dragablz:TabablzControl.HeaderItemTemplate}"
+                                                 Style="{StaticResource MyTabablzDragablzItemsControlStyle}"
+                                                 ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent},Path=Items}">
+                    <dragablz:DragablzItemsControl.MaxWidth>
+                        <MultiBinding>
+                            <MultiBinding.Converter>
+                                <dragablz:TabablzHeaderSizeConverter Orientation="Horizontal"/>
+                            </MultiBinding.Converter>
+                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource TemplatedParent}"/>
+                            <Binding Path="ItemsPresenterWidth" RelativeSource="{RelativeSource Self}"/>
+                            <Binding ElementName="PrefixContentControl" Path="ActualWidth"/>
+                            <Binding ElementName="DefaultAddButton" Path="DesiredSize.Width"/>
+                            <Binding ElementName="SuffixContentControl" Path="DesiredSize.Width"/>
+                        </MultiBinding>
+                    </dragablz:DragablzItemsControl.MaxWidth>
+                </dragablz:DragablzItemsControl>
+                <Button Name="DefaultAddButton"
+                                                 Style="{StaticResource MaterialDesignAddItemCommandButtonStyle}"
+                                                 Grid.Column="2"
+                                                 Command="{x:Static dragablz:TabablzControl.AddItemCommand}"
+                                                 Visibility="{TemplateBinding ShowDefaultAddButton,Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <ContentControl Name="SuffixContentControl"
+                                                 Grid.Column="3"
+                                                 Content="{TemplateBinding dragablz:TabablzControl.HeaderSuffixContent}"
+                                                 ContentStringFormat="{TemplateBinding dragablz:TabablzControl.HeaderSuffixContentStringFormat}"
+                                                 ContentTemplate="{TemplateBinding dragablz:TabablzControl.HeaderSuffixContentStringFormat}"
+                                                 ContentTemplateSelector="{TemplateBinding dragablz:TabablzControl.HeaderSuffixContentTemplateSelector}"
+                                                 HorizontalAlignment="Stretch"/>
+            </Grid>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="TabControl.TabStripPlacement" Value="Bottom">
+                <Setter TargetName="PART_HeaderItemsControl"
+                                             Property="Grid.Row"
+                                             Value="1"/>
+                <Setter TargetName="contentPanel"
+                                             Property="Grid.Row"
+                                             Value="0"/>
+                <Setter TargetName="RowDefinition0"
+                                             Property="RowDefinition.Height"
+                                             Value="*"/>
+                <Setter TargetName="RowDefinition1"
+                                             Property="RowDefinition.Height"
+                                             Value="Auto"/>
+            </Trigger>
+            <Trigger Property="UIElement.IsEnabled" Value="False">
+                <Setter TargetName="templateRoot"
+                                             Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                                             Property="TextElement.Foreground"/>
+            </Trigger>
+            <Trigger Property="dragablz:TabablzControl.IsDraggingWindow" Value="True">
+                <Setter TargetName="DefaultAddButton"
+                                             Property="UIElement.Visibility"
+                                             Value="Hidden"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+</ResourceDictionary>
