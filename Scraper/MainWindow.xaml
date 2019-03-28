@@ -8,16 +8,16 @@
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:model="clr-namespace:Scraper.BAL;assembly=Scraper.BAL"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=model:MainViewModel}"
-        Title="爬网-淘宝" >
+        d:DataContext="{d:DesignInstance Type=model:MainViewModel}" 
+        Title="爬网-淘宝" TitleCaps="False" >
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <GroupBox Header="浏览区" Grid.Column="0" Grid.Row="1" Margin="5">
-            <WindowsFormsHost  Margin="-5">
-                <model:WebBrowserEx x:Name="webBrowser" Dock="Fill" />
+            <WindowsFormsHost  Name="host" Margin="-5" >
+                <!--<model:WebBrowserEx x:Name="webBrowser" Dock="Fill" />-->
             </WindowsFormsHost>
         </GroupBox>
         <GroupBox Header="参数设置" Grid.Column="0" Grid.Row="0"  Margin="5">
@@ -35,7 +35,6 @@
                 <TextBox  Grid.Column="3" Grid.Row="0" VerticalAlignment="Center"  Margin="5" HorizontalAlignment="Stretch" />
                 <Button Content="开始爬网" Grid.Column="5" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5"/>
             </Grid>
-        </GroupBox>
-
+        </GroupBox> 
     </Grid>
 </controls:MetroWindow>

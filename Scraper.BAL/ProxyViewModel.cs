@@ -70,6 +70,11 @@ namespace Scraper.BAL
             var webBrowser = new System.Windows.Forms.WebBrowser();
             webBrowser.DocumentCompleted += (s, e1) =>
             {
+                if (webBrowser.ReadyState != System.Windows.Forms.WebBrowserReadyState.Complete)
+                {
+                    return;
+                }
+
                 IEProxies.Clear();
 
                 var ipList = webBrowser.Document.GetElementById("ip_list").GetElementsByTagName("tr");

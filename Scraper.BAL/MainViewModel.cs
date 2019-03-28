@@ -18,12 +18,15 @@ namespace Scraper.BAL
     {
         public ProxyViewModel ProxyViewModel { get; set; }
 
+        public WebBrowserEx WebBrowser { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
         public MainViewModel()
         {
             ProxyViewModel = new ProxyViewModel();
+            WebBrowser = new WebBrowserEx(); 
         }
 
     }
