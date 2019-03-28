@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -28,7 +29,7 @@ namespace Scraper.BAL
 
         /// <summary>
         /// 代理列表
-        /// </summary>
+        /// </summary> 
         public List<IEProxy> IEProxies { get; set; }
 
         /// <summary>
@@ -79,12 +80,12 @@ namespace Scraper.BAL
 
         int index = 0;
 
-        protected override void OnNavigating(WebBrowserNavigatingEventArgs e)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        public void NewNavigate(string url)
         {
-            //if (e.Url.ToString().Contains("javascript:void(0)"))
-            //{
-            //    e.Cancel = true;
-            //}
             if (IEProxies == null || IEProxies.Count == 0)
             {
                 return;
@@ -101,23 +102,12 @@ namespace Scraper.BAL
                         break;
                     }
 
-                    WebBrowserReadyState state = WebBrowserReadyState.Uninitialized;
-                    this.Invoke(new Action(() =>
-                    {
-                        state = this.ReadyState;
-                    }));
-
-                    if (state != WebBrowserReadyState.Uninitialized)
-                    {
-                        break;
-                    }
-
                     if (IEProxies != null && IEProxies.Count > 0)
                     {
                         CurrentIEProxy = IEProxies[index];
                         index++;
 
-                        if (index < IEProxies.Count)
+                        if (index >= IEProxies.Count)
                         {
                             CurrentIEProxy = null;
                             IEProxy.InternetSetOption(String.Empty);
@@ -130,11 +120,30 @@ namespace Scraper.BAL
 
                     this.Invoke(new Action(() =>
                     {
-                        this.Navigate(e.Url, null, null, null);
+                        this.Navigate(url, null, null, null);
                     }));
+
+                    WebBrowserReadyState state = WebBrowserReadyState.Uninitialized;
+                    this.Invoke(new Action(() =>
+                    {
+                        state = this.ReadyState;
+                    }));
+
+                    if (state != WebBrowserReadyState.Uninitialized)
+                    {
+                        break;
+                    }
 
                 } while (true);
             });
+        }
+
+        protected override void OnNavigating(WebBrowserNavigatingEventArgs e)
+        {
+            //if (e.Url.ToString().Contains("javascript:void(0)"))
+            //{
+            //    e.Cancel = true;
+            //}
 
             base.OnNavigating(e);
         }
@@ -142,7 +151,7 @@ namespace Scraper.BAL
         SHDocVw.WebBrowser nativeBrowser;
 
         protected override void OnNewWindow(CancelEventArgs e)
-        { 
+        {
             this.Navigate(this.StatusText);
             e.Cancel = true;
 

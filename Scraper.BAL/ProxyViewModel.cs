@@ -1,4 +1,5 @@
-﻿using MVVM.Model;
+﻿using MVVM.Messaging;
+using MVVM.Model;
 using MVVM.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -11,20 +12,40 @@ using System.Windows.Input;
 
 namespace Scraper.BAL
 {
+    /// <summary>
+    /// 代理ViewMode
+    /// </summary>
     public class ProxyViewModel : NotifyBaseModel
-    {  
+    {
         /// <summary>
-       /// 
-       /// </summary>
-        public ProxyViewModel()
-        {
-            IEProxies = new ObservableCollection<IEProxy>();
-        }
-         
+        /// 代理加载完成
+        /// </summary>
+        public static readonly string ProxieCompleted = "ProxieCompleted";
+
         /// <summary>
         /// 
         /// </summary>
-        public ObservableCollection<IEProxy> IEProxies { get; set; }
+        public ProxyViewModel()
+        {
+            IEProxies = new ObservableCollection<IEProxy>();
+
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<IEProxy> IEProxies
+        {
+            get
+            {
+                return this.GetValue(o => o.IEProxies);
+            }
+            set
+            {
+                this.SetValue(o => o.IEProxies, value);
+            }
+        }
 
         /// <summary>
         /// 从指定的网址中获取代理服务器
@@ -62,6 +83,8 @@ namespace Scraper.BAL
                         IEProxies.Add(new IEProxy() { IP = ip, Port = port });
                     }
                 }
+
+                Messenger.Default.Send(new NotificationMessage() { Key = ProxieCompleted, Data = IEProxies });
             };
             webBrowser.Navigate(url);
         }

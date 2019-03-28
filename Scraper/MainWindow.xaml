@@ -15,11 +15,11 @@
         </Grid.ColumnDefinitions>
         <GroupBox Header="浏览区" Grid.Column="0" Grid.Row="0" Margin="5">
             <WindowsFormsHost  Margin="-5">
-                <model:WebBrowserEx x:Name="webBrowser" Dock="Fill"/>
+                <model:WebBrowserEx x:Name="webBrowser" Dock="Fill" />
             </WindowsFormsHost>
         </GroupBox>
         <GroupBox Header="参数设置" Grid.Column="1" Grid.Row="0"  Margin="5">
-            
+
         </GroupBox>
 
     </Grid>
