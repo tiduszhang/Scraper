@@ -16,50 +16,15 @@ namespace Scraper.BAL
     /// </summary>
     public class MainViewModel : NotifyBaseModel
     {
+        public ProxyViewModel ProxyViewModel { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
         public MainViewModel()
         {
-            IEProxies = new ObservableCollection<IEProxy>();
+            ProxyViewModel = new ProxyViewModel();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public ObservableCollection<IEProxy> IEProxies { get; set; }
- 
-        /// <summary>
-        /// 从指定的网址中获取代理服务器
-        /// </summary>
-        /// <param name="url"></param>
-        public ICommand GetProxies
-        {
-            get
-            {
-                return new DelegateCommand(() =>
-                {
-                    string url = "www.xicidaili.com";
-                    var webBrowser = new System.Windows.Forms.WebBrowser();
-                    webBrowser.DocumentCompleted += (s, e1) =>
-                    { 
-                        IEProxies.Clear();
-
-                        var ipList = webBrowser.Document.GetElementById("ip_list").GetElementsByTagName("tr");
-                        foreach (HtmlElement iptr in ipList)
-                        {
-                            if (iptr.GetAttribute("className") != "subtitle"
-                                && iptr.Children[0].GetAttribute("className") == "country")
-                            {
-                                string ip = iptr.Children[1].InnerText;
-                                string port = iptr.Children[2].InnerText;
-                                IEProxies.Add(new IEProxy() { IP = ip, Port = port });
-                            }
-                        }
-                    };
-                    webBrowser.Navigate(url);
-                });
-            }
-        }
     }
 }

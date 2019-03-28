@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Scraper.BAL
@@ -24,12 +26,24 @@ namespace Scraper.BAL
             Dock = DockStyle.Fill;
         }
 
+        /// <summary>
+        /// 代理列表
+        /// </summary>
+        public List<IEProxy> IEProxies { get; set; }
+
+        /// <summary>
+        /// 当前使用的代理
+        /// </summary>
+        public IEProxy CurrentIEProxy { get; set; }
 
         /// <summary>
         /// 当WebBrowser关闭后
         /// </summary>
         public event EventHandler WindowClosed;
 
+        /// <summary>
+        /// 当WebBrowser关闭后
+        /// </summary>
         protected void OnWindowClosed(EventArgs e)
         {
             WindowClosed?.Invoke(this, e);
@@ -63,19 +77,82 @@ namespace Scraper.BAL
             base.WndProc(ref m);
         }
 
+        int index = 0;
+
         protected override void OnNavigating(WebBrowserNavigatingEventArgs e)
         {
             //if (e.Url.ToString().Contains("javascript:void(0)"))
             //{
             //    e.Cancel = true;
             //}
+            if (IEProxies == null || IEProxies.Count == 0)
+            {
+                return;
+            }
+
+            Task.Factory.StartNew(() =>
+            {
+                do
+                {
+                    Thread.Sleep(500);
+
+                    if (index >= IEProxies.Count)
+                    {
+                        break;
+                    }
+
+                    WebBrowserReadyState state = WebBrowserReadyState.Uninitialized;
+                    this.Invoke(new Action(() =>
+                    {
+                        state = this.ReadyState;
+                    }));
+
+                    if (state != WebBrowserReadyState.Uninitialized)
+                    {
+                        break;
+                    }
+
+                    if (IEProxies != null && IEProxies.Count > 0)
+                    {
+                        CurrentIEProxy = IEProxies[index];
+                        index++;
+
+                        if (index < IEProxies.Count)
+                        {
+                            CurrentIEProxy = null;
+                            IEProxy.InternetSetOption(String.Empty);
+                        }
+                        else
+                        {
+                            IEProxy.InternetSetOption(CurrentIEProxy.IP + ":" + CurrentIEProxy.Port);
+                        }
+                    }
+
+                    this.Invoke(new Action(() =>
+                    {
+                        this.Navigate(e.Url, null, null, null);
+                    }));
+
+                } while (true);
+            });
 
             base.OnNavigating(e);
         }
 
         SHDocVw.WebBrowser nativeBrowser;
 
+        protected override void OnNewWindow(CancelEventArgs e)
+        { 
+            this.Navigate(this.StatusText);
+            e.Cancel = true;
 
+            base.OnNewWindow(e);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnDocumentCompleted(WebBrowserDocumentCompletedEventArgs e)
         {
             if (nativeBrowser == null)
@@ -86,20 +163,32 @@ namespace Scraper.BAL
 
             this.Document.Window.Error += Window_Error;
 
-            var aElements = this.Document.GetElementsByTagName("a");
 
-            foreach (HtmlElement aElement in aElements)
-            {
-                if (aElement.GetAttribute("href").Contains("javascript") && String.IsNullOrWhiteSpace(aElement.GetAttribute("onclick")))
-                {
-                    aElement.SetAttribute("onclick", aElement.GetAttribute("href"));
-                    aElement.SetAttribute("href", "#");
-                }
-                //if (aElement.GetAttribute("target") != "")
-                //{
-                //    aElement.SetAttribute("target", "_self");
-                //}
-            }
+            ////将所有的链接的目标，指向本窗体
+            //foreach (HtmlElement archor in this.Document.Links)
+            //{
+            //    archor.SetAttribute("target", "_self");
+            //}
+            ////将所有的FORM的提交目标，指向本窗体
+            //foreach (HtmlElement form in this.Document.Forms)
+            //{
+            //    form.SetAttribute("target", "_self");
+            //}
+
+            //var aElements = this.Document.GetElementsByTagName("a");
+
+            //foreach (HtmlElement aElement in aElements)
+            //{
+            //    if (aElement.GetAttribute("href").Contains("javascript") && String.IsNullOrWhiteSpace(aElement.GetAttribute("onclick")))
+            //    {
+            //        aElement.SetAttribute("onclick", aElement.GetAttribute("href"));
+            //        aElement.SetAttribute("href", "#");
+            //    }
+            //    //if (aElement.GetAttribute("target") != "")
+            //    //{
+            //    //    aElement.SetAttribute("target", "_self");
+            //    //}
+            //}
 
             //var head = this.Document.GetElementsByTagName("head")[0];
 
@@ -127,9 +216,10 @@ namespace Scraper.BAL
 
         private void NativeBrowser_NewWindow2(ref object ppDisp, ref bool Cancel)
         {
-            var popup = new WinBroswer();
-            popup.Show(this.Parent);
-            ppDisp = popup.Browser.ActiveXInstance;
+            ppDisp = this.ActiveXInstance;
+            //var popup = new WinBroswer();
+            //popup.Show(this.Parent);
+            //ppDisp = popup.Browser.ActiveXInstance;
         }
 
     }

@@ -16,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using MVVM; 
 namespace Scraper
 {
     /// <summary>
@@ -37,22 +37,16 @@ namespace Scraper
         /// <param name="e"></param>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+           if(this.IsInDesignMode())
+            {
+                return;
+            }
             var dataContext = new MainViewModel();
             this.DataContext = dataContext;
-            dataContext.GetProxies.Execute(null);
+            dataContext.ProxyViewModel.GetProxies();
+            webBrowser.IEProxies = dataContext.ProxyViewModel.IEProxies.ToList();
+            webBrowser.Navigate("www.taobao.com");
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnStart_Click(object sender, RoutedEventArgs e)
-        {
-            WinBroswer winBroswer = new WinBroswer(); 
-            winBroswer.URL = "www.taobao.com";
-            winBroswer.ShowDialog();
-        }
-         
+          
     }
 }
