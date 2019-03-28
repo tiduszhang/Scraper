@@ -137,6 +137,7 @@
     <Compile Include="ViewModel\WindowMaximizedCommand.cs" />
     <Compile Include="ViewModel\WindowMinimizedCommand.cs" />
     <Compile Include="ViewModel\WindowNormalCommand.cs" />
+    <Compile Include="View\BoolToValueConverter.cs" />
     <Compile Include="Win32.cs" />
     <Compile Include="UIElementHelper.cs" />
     <Compile Include="View\BoolToVisibilityConverter.cs" />

@@ -5,11 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         x:Class="Scraper.MainWindow"
         xmlns:controls ="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:mvvm="http://schemas.strongit.com.cn/Base"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:model="clr-namespace:Scraper.BAL;assembly=Scraper.BAL"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=model:MainViewModel}" 
-        Title="爬网-淘宝" TitleCaps="False" >
+        Title="{Binding Title}" TitleCaps="False" >
+    <Window.Resources>
+        <mvvm:BoolToValueConverter x:Key="boolToValueConverter" TrueValue="停止爬网" FalseValue="开始爬网" />
+    </Window.Resources>
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -30,11 +34,11 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="启用代理" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
-                <CheckBox  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" Click="CheckBox_Click"/>
+                <CheckBox  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" Command="{Binding CheckProxy}" IsChecked="{Binding UserProxy, Mode=TwoWay}"/>
                 <Label Content="检索关键字" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
-                <TextBox  Grid.Column="3" Grid.Row="0" VerticalAlignment="Center"  Margin="5" HorizontalAlignment="Stretch" />
-                <Button Content="开始爬网" Grid.Column="5" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5"/>
+                <TextBox Name="txtQuery" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center"  Margin="5" HorizontalAlignment="Stretch" />
+                <Button Content="{Binding IsScrapering, Mode=TwoWay, Converter={StaticResource boolToValueConverter}}" Grid.Column="5" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" Command="{Binding ExecScraper}" CommandParameter="{Binding Text, ElementName=txtQuery, Mode=TwoWay}"/>
             </Grid>
-        </GroupBox> 
+        </GroupBox>
     </Grid>
 </controls:MetroWindow>
