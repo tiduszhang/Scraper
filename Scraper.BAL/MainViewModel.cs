@@ -28,6 +28,11 @@ namespace Scraper.BAL
         public WebBrowserEx WebBrowser { get; set; }
 
         /// <summary>
+        /// 商品列表
+        /// </summary>
+        public List<Commodity> Commoditys { get; set; }
+
+        /// <summary>
         /// url
         /// </summary>
         public string Url { get; set; } = "www.taobao.com";
@@ -94,7 +99,7 @@ namespace Scraper.BAL
             Messenger.Default.Register<NotificationMessage>(this, ProxieCompleted);
             ProxyViewModel = new ProxyViewModel();
             WebBrowser = new WebBrowserEx();
-
+            WebBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             WebBrowser.Navigating += WebBrowser_Navigating;
 
         }
@@ -108,7 +113,7 @@ namespace Scraper.BAL
             {
                 return new DelegateCommand(() =>
                 {
-                    WebBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
+                    //WebBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
                     if (UserProxy == true)
                     {
                         ProxyViewModel.GetProxies();
@@ -143,7 +148,7 @@ namespace Scraper.BAL
         /// <param name="e"></param>
         private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            WebBrowser.DocumentCompleted -= WebBrowser_DocumentCompleted;
+            //WebBrowser.DocumentCompleted -= WebBrowser_DocumentCompleted;
             SetTitle();
             if (WebBrowser.ReadyState == System.Windows.Forms.WebBrowserReadyState.Complete)
             {
@@ -152,8 +157,8 @@ namespace Scraper.BAL
                 {
                     return;
                 }
-                //todo:执行解析网页
-
+                //执行解析网页
+                DoCommoditys();
 
                 //执行下一个查询
                 if (QueryIndex == QueryStrings.Length)
@@ -162,6 +167,7 @@ namespace Scraper.BAL
                     return;
                 }
 
+                System.Threading.Thread.Sleep(1000);
                 DoQuery(QueryStrings[QueryIndex]);
             }
 
@@ -267,12 +273,35 @@ namespace Scraper.BAL
                 {
                     if (button.GetAttribute("className").Contains("btn-search"))
                     {
-                        WebBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
+                        //WebBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
                         button.InvokeMember("click");
+
                         return;
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 解析搜索列表网页
+        /// </summary>
+        private void DoCommoditys()
+        {
+            var dom = (mshtml.IHTMLDocument3)WebBrowser.Document.DomDocument;
+            var mainDivs = dom.getElementById("main");
+
+            
+
+            var main = WebBrowser.Document.GetElementById("main");
+            var divs = main.Children.GetElementsByName("div"); 
+            foreach (HtmlElement div in divs)
+            {
+                if (div.GetAttribute("className") == "m-itemlist")
+                {
+
+                }
+            }
+
         }
     }
 }

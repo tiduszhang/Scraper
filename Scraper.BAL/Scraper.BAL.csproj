@@ -73,6 +73,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commodity.cs" />
     <Compile Include="IEKernel.cs" />
     <Compile Include="IEProxy.cs" />
     <Compile Include="MainViewModel.cs" />

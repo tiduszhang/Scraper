@@ -26,7 +26,6 @@ namespace Scraper.BAL
             ScriptErrorsSuppressed = true;
             Dock = DockStyle.Fill;
             IEProxies = new List<IEProxy>();
-            this.Document.Window.Error += Window_Error;
         }
          
         /// <summary>
