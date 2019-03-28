@@ -10,7 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -18,13 +17,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MVVM;
 using MVVM.Messaging;
+using MahApps.Metro.Controls;
 
 namespace Scraper
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         public MainWindow()
         {
@@ -48,26 +48,14 @@ namespace Scraper
 
             var dataContext = new MainViewModel();
             this.DataContext = dataContext;
-            dataContext.ProxyViewModel.GetProxies();
             webBrowser.Navigating += WebBrowser_Navigating;
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
+            webBrowser.NewNavigate("www.taobao.com");
         }
 
-        private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        private void WebBrowser_DocumentCompleted(object sender, System.Windows.Forms.WebBrowserDocumentCompletedEventArgs e)
         {
-            if (webBrowser.CurrentIEProxy != null)
-            {
-                this.Title = webBrowser.DocumentTitle + "，当前代理：" + webBrowser.CurrentIEProxy.IP + ":" + webBrowser.CurrentIEProxy.Port + "。";
-            }
-            else
-            {
-                this.Title = webBrowser.DocumentTitle + "，当前没有使用代理。";
-            }
-        }
-
-        private void WebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
-        {
-            if (String.IsNullOrWhiteSpace(webBrowser.DocumentTitle))
+            if (String.IsNullOrWhiteSpace(webBrowser.DocumentTitle) && webBrowser.CurrentIEProxy != null)
             {
                 this.Title = "正在尝试使用代理：" + webBrowser.CurrentIEProxy.IP + ":" + webBrowser.CurrentIEProxy.Port + "。";
             }
@@ -75,7 +63,23 @@ namespace Scraper
             {
                 this.Title = webBrowser.DocumentTitle + "，当前代理：" + webBrowser.CurrentIEProxy.IP + ":" + webBrowser.CurrentIEProxy.Port + "。";
             }
-            else
+            else if (!String.IsNullOrWhiteSpace(webBrowser.DocumentTitle))
+            {
+                this.Title = webBrowser.DocumentTitle + "，当前没有使用代理。";
+            }
+        }
+
+        private void WebBrowser_Navigating(object sender, System.Windows.Forms.WebBrowserNavigatingEventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(webBrowser.DocumentTitle) && webBrowser.CurrentIEProxy != null)
+            {
+                this.Title = "正在尝试使用代理：" + webBrowser.CurrentIEProxy.IP + ":" + webBrowser.CurrentIEProxy.Port + "。";
+            }
+            else if (webBrowser.CurrentIEProxy != null)
+            {
+                this.Title = webBrowser.DocumentTitle + "，当前代理：" + webBrowser.CurrentIEProxy.IP + ":" + webBrowser.CurrentIEProxy.Port + "。";
+            }
+            else if (!String.IsNullOrWhiteSpace(webBrowser.DocumentTitle))
             {
                 this.Title = webBrowser.DocumentTitle + "，当前没有使用代理。";
             }
@@ -89,10 +93,39 @@ namespace Scraper
         {
             if (notificationMessage.Key == ProxyViewModel.ProxieCompleted)
             {
+                webBrowser.IEProxies.Clear();
                 webBrowser.IEProxies = (this.DataContext as MainViewModel).ProxyViewModel.IEProxies.ToList();
                 webBrowser.NewNavigate("www.taobao.com");
-                Messenger.Default.Unregister<NotificationMessage>(this, ProxieCompleted);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            if (checkBox.IsChecked == true)
+            {
+                (this.DataContext as MainViewModel).ProxyViewModel.GetProxies();
+            }
+            else
+            {
+                webBrowser.IEProxies.Clear();
+                webBrowser.NewNavigate("www.taobao.com");
+            }
+        }
+
+        /// <summary>
+        /// 退出程序，清除代理
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosed(EventArgs e)
+        {
+            IEProxy.InternetSetOption(String.Empty);
+            base.OnClosed(e);
         }
     }
 }

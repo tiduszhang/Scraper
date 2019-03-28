@@ -25,6 +25,7 @@ namespace Scraper.BAL
             AllowWebBrowserDrop = false;
             ScriptErrorsSuppressed = true;
             Dock = DockStyle.Fill;
+            IEProxies = new List<IEProxy>();
         }
 
         /// <summary>
@@ -86,17 +87,22 @@ namespace Scraper.BAL
         /// <param name="url"></param>
         public void NewNavigate(string url)
         {
+            CurrentIEProxy = null;
+            IEProxy.InternetSetOption(String.Empty);
             if (IEProxies == null || IEProxies.Count == 0)
             {
+                this.Navigate(url, null, null, null);
                 return;
             }
+
+            this.Navigate("about:blank", null, null, null);
+
 
             Task.Factory.StartNew(() =>
             {
                 do
                 {
-                    Thread.Sleep(500);
-
+                    Thread.Sleep(100);
                     if (index >= IEProxies.Count)
                     {
                         break;
@@ -123,13 +129,15 @@ namespace Scraper.BAL
                         this.Navigate(url, null, null, null);
                     }));
 
+                    Thread.Sleep(500);
+
                     WebBrowserReadyState state = WebBrowserReadyState.Uninitialized;
                     this.Invoke(new Action(() =>
                     {
                         state = this.ReadyState;
                     }));
 
-                    if (state != WebBrowserReadyState.Uninitialized)
+                    if (state != WebBrowserReadyState.Uninitialized && !this.Url.ToString().StartsWith("res:") && this.Url.ToString() != "about:blank")
                     {
                         break;
                     }
