@@ -144,17 +144,27 @@ namespace Scraper.BAL
         private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             WebBrowser.DocumentCompleted -= WebBrowser_DocumentCompleted;
+            SetTitle();
             if (WebBrowser.ReadyState == System.Windows.Forms.WebBrowserReadyState.Complete)
             {
                 //加载完成 
-                if (IsScrapering)
+                if (!IsScrapering)
                 {
-                    //todo:执行解析网页
-                    //todo:执行下一个查询
+                    return;
                 }
+                //todo:执行解析网页
+
+
+                //执行下一个查询
+                if (QueryIndex == QueryStrings.Length)
+                {
+                    IsScrapering = false;
+                    return;
+                }
+
+                DoQuery(QueryStrings[QueryIndex]);
             }
 
-            SetTitle();
         }
 
         /// <summary>
@@ -192,6 +202,14 @@ namespace Scraper.BAL
         }
 
         /// <summary>
+        /// 查询关键字
+        /// </summary>
+        string[] QueryStrings { get; set; }
+        /// <summary>
+        /// 查询关键字索引
+        /// </summary>
+        int QueryIndex { get; set; }
+        /// <summary>
         /// 开始爬网
         /// </summary>
         public ICommand ExecScraper
@@ -202,14 +220,59 @@ namespace Scraper.BAL
                 {
                     IsScrapering = !IsScrapering;
 
-                    if (IsScrapering == true)
+                    if (IsScrapering != true)
                     {
                         //开始请求查询页面
+                        return;
                     }
+                    if (String.IsNullOrWhiteSpace(query))
+                    {
+                        MessageBox.Show("请先输入检索关键字,多个关键字请使用“,”分割!");
+                        return;
+                    }
+
+                    QueryIndex = 0;
+                    QueryStrings = query.Split(',');
+
+                    DoQuery(QueryStrings[QueryIndex]);
                 });
             }
         }
 
+        /// <summary>
+        /// 执行一次查询
+        /// </summary>
+        /// <param name="queryString"></param>
+        private void DoQuery(string queryString)
+        {
+            QueryIndex++;
+            var search = WebBrowser.Document.GetElementById("q");
+            if (search.TagName.ToLower() == "input")
+            {
+                search.SetAttribute("value", queryString);
+            }
 
+            HtmlElement from = WebBrowser.Document.GetElementById("J_TSearchForm");
+            if (from == null)
+            {
+                from = WebBrowser.Document.GetElementById("J_SearchForm");
+            }
+
+            //btn-search tb-bg
+            //submit icon-btn-search
+            var buttons = from.GetElementsByTagName("button");
+            if (buttons != null && buttons.Count > 0)
+            {
+                foreach (HtmlElement button in buttons)
+                {
+                    if (button.GetAttribute("className").Contains("btn-search"))
+                    {
+                        WebBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
+                        button.InvokeMember("click");
+                        return;
+                    }
+                }
+            }
+        }
     }
 }

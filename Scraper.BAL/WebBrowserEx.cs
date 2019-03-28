@@ -26,8 +26,9 @@ namespace Scraper.BAL
             ScriptErrorsSuppressed = true;
             Dock = DockStyle.Fill;
             IEProxies = new List<IEProxy>();
+            this.Document.Window.Error += Window_Error;
         }
-
+         
         /// <summary>
         /// 代理列表
         /// </summary> 
@@ -145,17 +146,7 @@ namespace Scraper.BAL
                 } while (true);
             });
         }
-
-        protected override void OnNavigating(WebBrowserNavigatingEventArgs e)
-        {
-            //if (e.Url.ToString().Contains("javascript:void(0)"))
-            //{
-            //    e.Cancel = true;
-            //}
-
-            base.OnNavigating(e);
-        }
-
+         
         SHDocVw.WebBrowser nativeBrowser;
 
         protected override void OnNewWindow(CancelEventArgs e)
@@ -165,79 +156,11 @@ namespace Scraper.BAL
 
             base.OnNewWindow(e);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnDocumentCompleted(WebBrowserDocumentCompletedEventArgs e)
-        {
-            if (nativeBrowser == null)
-            {
-                nativeBrowser = (SHDocVw.WebBrowser)this.ActiveXInstance;
-                nativeBrowser.NewWindow2 += NativeBrowser_NewWindow2;
-            }
-
-            this.Document.Window.Error += Window_Error;
-
-
-            ////将所有的链接的目标，指向本窗体
-            //foreach (HtmlElement archor in this.Document.Links)
-            //{
-            //    archor.SetAttribute("target", "_self");
-            //}
-            ////将所有的FORM的提交目标，指向本窗体
-            //foreach (HtmlElement form in this.Document.Forms)
-            //{
-            //    form.SetAttribute("target", "_self");
-            //}
-
-            //var aElements = this.Document.GetElementsByTagName("a");
-
-            //foreach (HtmlElement aElement in aElements)
-            //{
-            //    if (aElement.GetAttribute("href").Contains("javascript") && String.IsNullOrWhiteSpace(aElement.GetAttribute("onclick")))
-            //    {
-            //        aElement.SetAttribute("onclick", aElement.GetAttribute("href"));
-            //        aElement.SetAttribute("href", "#");
-            //    }
-            //    //if (aElement.GetAttribute("target") != "")
-            //    //{
-            //    //    aElement.SetAttribute("target", "_self");
-            //    //}
-            //}
-
-            //var head = this.Document.GetElementsByTagName("head")[0];
-
-            ////创建script标签
-            //HtmlElement scriptEl2 = this.Document.CreateElement("script");
-            //mshtml.IHTMLScriptElement element2 = (mshtml.IHTMLScriptElement)scriptEl2.DomElement;
-            //element2.src = new Uri(System.IO.Path.GetFullPath(WorkPath.ExecPath + @"js/showModalDialog.js")).ToString();
-            //element2.type = "text/javascript";
-            //head.AppendChild(scriptEl2);
-
-            ////创建script标签
-            //HtmlElement scriptEl = this.Document.CreateElement("script");
-            //mshtml.IHTMLScriptElement element = (mshtml.IHTMLScriptElement)scriptEl.DomElement;
-            //element.src = new Uri(System.IO.Path.GetFullPath(WorkPath.ExecPath + @"js/edge-support.js")).ToString();
-            //element.type = "text/javascript";
-            //head.AppendChild(scriptEl);
-
-            base.OnDocumentCompleted(e);
-        }
-
+         
         private void Window_Error(object sender, HtmlElementErrorEventArgs e)
         {
             e.Handled = true;
         }
-
-        private void NativeBrowser_NewWindow2(ref object ppDisp, ref bool Cancel)
-        {
-            ppDisp = this.ActiveXInstance;
-            //var popup = new WinBroswer();
-            //popup.Show(this.Parent);
-            //ppDisp = popup.Browser.ActiveXInstance;
-        }
-
+        
     }
 }
