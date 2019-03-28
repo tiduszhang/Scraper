@@ -120,7 +120,7 @@ namespace Scraper.BAL
                     }
                     else
                     {
-                        WebBrowser.IEProxies.Clear();
+                        WebBrowser.Proxies.Clear();
                         WebBrowser.NewNavigate(Url);
                     }
                 });
@@ -135,8 +135,8 @@ namespace Scraper.BAL
         {
             if (notificationMessage.Key == ProxyViewModel.ProxieCompleted)
             {
-                WebBrowser.IEProxies.Clear();
-                WebBrowser.IEProxies = ProxyViewModel.IEProxies.ToList();
+                WebBrowser.Proxies.Clear();
+                WebBrowser.Proxies = ProxyViewModel.Proxies.ToList();
                 WebBrowser.NewNavigate(Url);
             }
         }
@@ -146,31 +146,30 @@ namespace Scraper.BAL
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        private void WebBrowser_DocumentCompleted(object sender, Gecko.Events.GeckoDocumentCompletedEventArgs e)
         {
             //WebBrowser.DocumentCompleted -= WebBrowser_DocumentCompleted;
             SetTitle();
-            if (WebBrowser.ReadyState == System.Windows.Forms.WebBrowserReadyState.Complete)
+            //if (WebBrowser.ReadyState == System.Windows.Forms.WebBrowserReadyState.Complete)
+            //{
+            //加载完成 
+            if (!IsScrapering)
             {
-                //加载完成 
-                if (!IsScrapering)
-                {
-                    return;
-                }
-                //执行解析网页
-                DoCommoditys();
+                return;
+            }
+            //执行解析网页
+            DoCommoditys();
 
-                //执行下一个查询
-                if (QueryIndex == QueryStrings.Length)
-                {
-                    IsScrapering = false;
-                    return;
-                }
-
-                System.Threading.Thread.Sleep(1000);
-                DoQuery(QueryStrings[QueryIndex]);
+            //执行下一个查询
+            if (QueryIndex == QueryStrings.Length)
+            {
+                IsScrapering = false;
+                return;
             }
 
+            System.Threading.Thread.Sleep(1000);
+            DoQuery(QueryStrings[QueryIndex]);
+            //} 
         }
 
         /// <summary>
@@ -178,7 +177,7 @@ namespace Scraper.BAL
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void WebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+        private void WebBrowser_Navigating(object sender, Gecko.Events.GeckoNavigatingEventArgs e)
         {
             SetTitle();
         }
@@ -189,13 +188,13 @@ namespace Scraper.BAL
         /// </summary>
         private void SetTitle()
         {
-            if (String.IsNullOrWhiteSpace(WebBrowser.DocumentTitle) && WebBrowser.CurrentIEProxy != null)
+            if (String.IsNullOrWhiteSpace(WebBrowser.DocumentTitle) && WebBrowser.CurrentProxy != null)
             {
-                this.Title = "正在尝试使用代理：" + WebBrowser.CurrentIEProxy.IP + ":" + WebBrowser.CurrentIEProxy.Port + "。";
+                this.Title = "正在尝试使用代理：" + WebBrowser.CurrentProxy.IP + ":" + WebBrowser.CurrentProxy.Port + "。";
             }
-            else if (WebBrowser.CurrentIEProxy != null)
+            else if (WebBrowser.CurrentProxy != null)
             {
-                this.Title = WebBrowser.DocumentTitle + "，当前代理：" + WebBrowser.CurrentIEProxy.IP + ":" + WebBrowser.CurrentIEProxy.Port + "。";
+                this.Title = WebBrowser.DocumentTitle + "，当前代理：" + WebBrowser.CurrentProxy.IP + ":" + WebBrowser.CurrentProxy.Port + "。";
             }
             else if (!String.IsNullOrWhiteSpace(WebBrowser.DocumentTitle))
             {
@@ -258,7 +257,7 @@ namespace Scraper.BAL
                 search.SetAttribute("value", queryString);
             }
 
-            HtmlElement from = WebBrowser.Document.GetElementById("J_TSearchForm");
+            var from = WebBrowser.Document.GetElementById("J_TSearchForm");
             if (from == null)
             {
                 from = WebBrowser.Document.GetElementById("J_SearchForm");
@@ -267,14 +266,14 @@ namespace Scraper.BAL
             //btn-search tb-bg
             //submit icon-btn-search
             var buttons = from.GetElementsByTagName("button");
-            if (buttons != null && buttons.Count > 0)
+            if (buttons != null && buttons.Length > 0)
             {
-                foreach (HtmlElement button in buttons)
+                foreach (var button in buttons)
                 {
-                    if (button.GetAttribute("className").Contains("btn-search"))
+                    if (button.GetAttribute("class").Contains("btn-search"))
                     {
                         //WebBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
-                        button.InvokeMember("click");
+                        (button as Gecko.GeckoHtmlElement).Click();//.("click");
 
                         return;
                     }
@@ -287,20 +286,21 @@ namespace Scraper.BAL
         /// </summary>
         private void DoCommoditys()
         {
-            var dom = (mshtml.IHTMLDocument3)WebBrowser.Document.DomDocument;
-            var mainDivs = dom.getElementById("main");
+            //var dom = WebBrowser.Document;
+            ////var dom = (mshtml.IHTMLDocument3)WebBrowser.Document.DomDocument;
+            //var mainDivs = dom.getElementById("main");
 
-            
+
 
             var main = WebBrowser.Document.GetElementById("main");
-            var divs = main.Children.GetElementsByName("div"); 
-            foreach (HtmlElement div in divs)
-            {
-                if (div.GetAttribute("className") == "m-itemlist")
-                {
+            //var divs = main.Children.GetElementsByName("div"); 
+            //foreach (HtmlElement div in divs)
+            //{
+            //    if (div.GetAttribute("className") == "m-itemlist")
+            //    {
 
-                }
-            }
+            //    }
+            //}
 
         }
     }

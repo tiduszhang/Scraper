@@ -23,6 +23,7 @@ namespace Scraper
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            Gecko.Xpcom.Initialize("Firefox");
             NoSQLHelper.DBPath = WorkPath.ExecPath;
             IEKernel.SetWebBrowserFeatures(11);
             base.OnStartup(e);

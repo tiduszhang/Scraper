@@ -27,23 +27,21 @@ namespace Scraper.BAL
         /// </summary>
         public ProxyViewModel()
         {
-            IEProxies = new ObservableCollection<IEProxy>();
-
-
+            Proxies = new ObservableCollection<GeckoProxy>(); 
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public ObservableCollection<IEProxy> IEProxies
+        public ObservableCollection<GeckoProxy> Proxies
         {
             get
             {
-                return this.GetValue(o => o.IEProxies);
+                return this.GetValue(o => o.Proxies);
             }
             set
             {
-                this.SetValue(o => o.IEProxies, value);
+                this.SetValue(o => o.Proxies, value);
             }
         }
 
@@ -75,7 +73,7 @@ namespace Scraper.BAL
                     return;
                 }
 
-                IEProxies.Clear();
+                Proxies.Clear();
 
                 var ipList = webBrowser.Document.GetElementById("ip_list").GetElementsByTagName("tr");
                 foreach (HtmlElement iptr in ipList)
@@ -85,11 +83,11 @@ namespace Scraper.BAL
                     {
                         string ip = iptr.Children[1].InnerText;
                         string port = iptr.Children[2].InnerText;
-                        IEProxies.Add(new IEProxy() { IP = ip, Port = port });
+                        Proxies.Add(new GeckoProxy() { IP = ip, Port = port });
                     }
                 }
 
-                Messenger.Default.Send(new NotificationMessage() { Key = ProxieCompleted, Data = IEProxies });
+                Messenger.Default.Send(new NotificationMessage() { Key = ProxieCompleted, Data = Proxies });
             };
             webBrowser.Navigate(url);
         }
