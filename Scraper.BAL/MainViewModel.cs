@@ -35,7 +35,7 @@ namespace Scraper.BAL
         /// <summary>
         /// url
         /// </summary>
-        public string Url { get; set; } = "www.taobao.com";
+        public string Url { get; set; } = "www.taobao.com"; // "about:config";//
 
         /// <summary>
         /// 使用代理
@@ -161,7 +161,7 @@ namespace Scraper.BAL
             DoCommoditys();
 
             //执行下一个查询
-            if (QueryIndex == QueryStrings.Length)
+            if (QueryStrings == null || QueryIndex == QueryStrings.Length)
             {
                 IsScrapering = false;
                 return;
@@ -188,22 +188,23 @@ namespace Scraper.BAL
         /// </summary>
         private void SetTitle()
         {
-            if (String.IsNullOrWhiteSpace(WebBrowser.DocumentTitle) && WebBrowser.CurrentProxy != null)
-            {
-                this.Title = "正在尝试使用代理：" + WebBrowser.CurrentProxy.IP + ":" + WebBrowser.CurrentProxy.Port + "。";
-            }
-            else if (WebBrowser.CurrentProxy != null)
-            {
-                this.Title = WebBrowser.DocumentTitle + "，当前代理：" + WebBrowser.CurrentProxy.IP + ":" + WebBrowser.CurrentProxy.Port + "。";
-            }
-            else if (!String.IsNullOrWhiteSpace(WebBrowser.DocumentTitle))
-            {
-                this.Title = WebBrowser.DocumentTitle + "，当前没有使用代理。";
-            }
-            if (WebBrowser.Url != null)
-            {
-                this.Title += WebBrowser.Url.ToString();
-            }
+            //if (String.IsNullOrWhiteSpace(WebBrowser.DocumentTitle) && WebBrowser.CurrentProxy != null)
+            //{
+            //    this.Title = "正在尝试使用代理：" + WebBrowser.CurrentProxy.IP + ":" + WebBrowser.CurrentProxy.Port + "。";
+            //}
+            //else if (WebBrowser.CurrentProxy != null)
+            //{
+            //    this.Title = WebBrowser.DocumentTitle + "，当前代理：" + WebBrowser.CurrentProxy.IP + ":" + WebBrowser.CurrentProxy.Port + "。";
+            //}
+            //else if (!String.IsNullOrWhiteSpace(WebBrowser.DocumentTitle))
+            //{
+            //    this.Title = WebBrowser.DocumentTitle + "，当前没有使用代理。";
+            //}
+            //if (WebBrowser.Url != null)
+            //{
+            //    this.Title += WebBrowser.Url.ToString();
+            //}
+            this.Title = WebBrowser.DocumentTitle + WebBrowser.Url.ToString();
         }
 
         /// <summary>

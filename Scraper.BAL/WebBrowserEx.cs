@@ -46,64 +46,78 @@ namespace Scraper.BAL
         /// <param name="url"></param>
         public void NewNavigate(string url)
         {
-            CurrentProxy = null;
-            GeckoProxy.InternetSetOption(String.Empty, String.Empty);
+            this.Navigate(url);
+            return;
 
-            if (Proxies == null || Proxies.Count == 0)
-            {
-                this.Navigate(url);
-                return;
-            }
+            //代理无法生效（暂时不使用代理功能）
+            //if (Proxies == null || Proxies.Count == 0 || index >= Proxies.Count)
+            //{
+            //    CurrentProxy = null;
+            //    GeckoProxy.InternetSetOption(String.Empty, String.Empty);
+            //    this.Navigate(url);
+            //}
+            //else
+            //{
+            //    CurrentProxy = Proxies[index];
+            //    index++;
+            //    GeckoProxy.InternetSetOption(CurrentProxy.IP, CurrentProxy.Port);
+            //    this.Navigate(url, Gecko.GeckoLoadFlags.BypassProxy);
+            //}
 
-            this.Navigate("about:blank");
 
+            //this.Navigate("about:blank");
 
-            Task.Factory.StartNew(() =>
-            {
-                do
-                {
-                    Thread.Sleep(100);
-                    if (index >= Proxies.Count)
-                    {
-                        break;
-                    }
+            //Task.Factory.StartNew(() =>
+            //{
+            //    do
+            //    {
+            //        Thread.Sleep(100);
+            //        if (index >= Proxies.Count)
+            //        {
+            //            break;
+            //        }
 
-                    if (Proxies != null && Proxies.Count > 0)
-                    {
-                        CurrentProxy = Proxies[index];
-                        index++;
+            //        if (Proxies != null && Proxies.Count > 0)
+            //        {
+            //            CurrentProxy = Proxies[index];
+            //            index++;
 
-                        if (index >= Proxies.Count)
-                        {
-                            CurrentProxy = null;
-                            GeckoProxy.InternetSetOption("", "");
-                        }
-                        else
-                        {
-                            GeckoProxy.InternetSetOption(CurrentProxy.IP, CurrentProxy.Port);
-                        }
-                    }
+            //            if (index >= Proxies.Count)
+            //            {
+            //                CurrentProxy = null;
+            //                GeckoProxy.InternetSetOption("", "");
+            //            }
+            //            else
+            //            {
+            //                GeckoProxy.InternetSetOption(CurrentProxy.IP, CurrentProxy.Port);
+            //            }
+            //        }
 
-                    this.Invoke(new Action(() =>
-                    {
-                        this.Navigate(url);
-                    }));
+            //        this.Invoke(new Action(() =>
+            //        {
+            //            this.Navigate(url);
+            //        }));
 
-                    Thread.Sleep(500);
+            //        Thread.Sleep(500);
 
-                    //WebBrowserReadyState state = WebBrowserReadyState.Uninitialized;
-                    //this.Invoke(new Action(() =>
-                    //{
-                    //    state = this.ReadyState;
-                    //}));
+            //        //WebBrowserReadyState state = WebBrowserReadyState.Uninitialized;
+            //        //this.Invoke(new Action(() =>
+            //        //{
+            //        //    state = this.ReadyState;
+            //        //}));
 
-                    if (!this.Url.ToString().StartsWith("res:") && this.Url.ToString() != "about:blank")//state != WebBrowserReadyState.Uninitialized && 
-                    {
-                        break;
-                    }
+            //        if (!this.Url.ToString().StartsWith("res:") && this.Url.ToString() != "about:blank")//state != WebBrowserReadyState.Uninitialized && 
+            //        {
+            //            break;
+            //        }
 
-                } while (true);
-            });
+            //    } while (true);
+            //});
+        }
+
+        protected override void OnDocumentTitleChanged(EventArgs e)
+        {
+            base.OnDocumentTitleChanged(e);
         }
 
         private void Window_Error(object sender, HtmlElementErrorEventArgs e)

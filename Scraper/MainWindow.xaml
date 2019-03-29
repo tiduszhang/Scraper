@@ -33,8 +33,8 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="启用代理" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
-                <CheckBox  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" Command="{Binding CheckProxy}" IsChecked="{Binding UserProxy, Mode=TwoWay}"/>
+                <!--<Label Content="启用代理" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />-->
+                <!--<CheckBox  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" Command="{Binding CheckProxy}" IsChecked="{Binding UserProxy, Mode=TwoWay}"/>-->
                 <Label Content="检索关键字" Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" />
                 <TextBox Name="txtQuery" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center"  Margin="5" HorizontalAlignment="Stretch" />
                 <Button Content="{Binding IsScrapering, Mode=TwoWay, Converter={StaticResource boolToValueConverter}}" Grid.Column="5" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" Command="{Binding ExecScraper}" CommandParameter="{Binding Text, ElementName=txtQuery, Mode=TwoWay}"/>
