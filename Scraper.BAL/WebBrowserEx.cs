@@ -47,7 +47,7 @@ namespace Scraper.BAL
         public void NewNavigate(string url)
         {
             CurrentProxy = null;
-            IEProxy.InternetSetOption(String.Empty);
+            GeckoProxy.InternetSetOption(String.Empty, String.Empty);
 
             if (Proxies == null || Proxies.Count == 0)
             {

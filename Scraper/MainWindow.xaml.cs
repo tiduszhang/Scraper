@@ -59,7 +59,7 @@ namespace Scraper
         /// <param name="e"></param>
         protected override void OnClosed(EventArgs e)
         {
-            IEProxy.InternetSetOption(String.Empty);
+            GeckoProxy.InternetSetOption(String.Empty, String.Empty);
             base.OnClosed(e);
         }
     }

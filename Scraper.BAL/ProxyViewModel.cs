@@ -63,7 +63,7 @@ namespace Scraper.BAL
         public void GetProxies()
         {
             string url = "www.xicidaili.com";
-            IEProxy.InternetSetOption(String.Empty);
+            GeckoProxy.InternetSetOption(String.Empty, String.Empty);
 
             var webBrowser = new System.Windows.Forms.WebBrowser();
             webBrowser.DocumentCompleted += (s, e1) =>
