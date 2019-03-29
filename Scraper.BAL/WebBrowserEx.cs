@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Gecko;
 
 namespace Scraper.BAL
 {
@@ -25,7 +26,10 @@ namespace Scraper.BAL
             //AllowWebBrowserDrop = false;
             //ScriptErrorsSuppressed = true;
             Dock = DockStyle.Fill;
+            NoDefaultContextMenu = false;
             Proxies = new List<GeckoProxy>();
+
+            
         }
 
         /// <summary>
@@ -38,7 +42,7 @@ namespace Scraper.BAL
         /// </summary>
         public GeckoProxy CurrentProxy { get; set; }
 
-        int index = 0;
+        //int index = 0;
 
         /// <summary>
         /// 
@@ -117,7 +121,7 @@ namespace Scraper.BAL
 
         protected override void OnDocumentTitleChanged(EventArgs e)
         {
-            base.OnDocumentTitleChanged(e);
+            base.OnDocumentTitleChanged(e); 
         }
 
         private void Window_Error(object sender, HtmlElementErrorEventArgs e)
@@ -125,5 +129,10 @@ namespace Scraper.BAL
             e.Handled = true;
         }
 
+        protected override void OnCreateWindow(GeckoCreateWindowEventArgs e)
+        {
+            e.WebBrowser = this;
+            base.OnCreateWindow(e);
+        }
     }
 }

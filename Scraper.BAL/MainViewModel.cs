@@ -128,6 +128,20 @@ namespace Scraper.BAL
         }
 
         /// <summary>
+        /// 测试按钮
+        /// </summary>
+        public ICommand TestCommand
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    WebBrowser.GoBack();
+                });
+            }
+        }
+
+        /// <summary>
         /// 代理加载完成
         /// </summary>
         /// <param name="notificationMessage"></param>
