@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commodity.cs" />
+    <Compile Include="CommodityDetialViewModel.cs" />
     <Compile Include="GeckoProxy.cs" />
     <Compile Include="IEKernel.cs" />
     <Compile Include="IEProxy.cs" />

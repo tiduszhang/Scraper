@@ -48,8 +48,16 @@ namespace Scraper
 
             ViewModel = new MainViewModel();
             this.DataContext = ViewModel;
-             
+
             this.host.Child = ViewModel.WebBrowser;
+            ViewModel.WebBrowser.NewWindowAction = () =>
+            {
+                var WinCommodityDetial = new WinCommodityDetial();
+                WinCommodityDetial.ViewModel = new CommodityDetialViewModel(); 
+                WinCommodityDetial.Show();
+
+                return WinCommodityDetial.ViewModel.WebBrowser;
+            };
             ViewModel.Navigate();
         }
 

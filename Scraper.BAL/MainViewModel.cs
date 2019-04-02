@@ -1,4 +1,5 @@
-﻿using MVVM.Messaging;
+﻿using Common;
+using MVVM.Messaging;
 using MVVM.Model;
 using MVVM.ViewModel;
 using System;
@@ -100,8 +101,18 @@ namespace Scraper.BAL
             ProxyViewModel = new ProxyViewModel();
             WebBrowser = new WebBrowserEx();
             WebBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
-            WebBrowser.Navigating += WebBrowser_Navigating;
+            WebBrowser.ProgressChanged += WebBrowser_ProgressChanged;
 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void WebBrowser_ProgressChanged(object sender, Gecko.GeckoProgressEventArgs e)
+        {
+            SetTitle();
         }
 
         /// <summary>
@@ -166,36 +177,35 @@ namespace Scraper.BAL
             SetTitle();
             //if (WebBrowser.ReadyState == System.Windows.Forms.WebBrowserReadyState.Complete)
             //{
+             
+            System.Threading.Thread.Sleep(200);
             //加载完成 
             if (!IsScrapering)
             {
                 return;
             }
-            //执行解析网页
-            DoCommoditys();
-
-            //执行下一个查询
-            if (QueryStrings == null || QueryIndex == QueryStrings.Length)
+            Task.Factory.StartNew(() =>
             {
-                IsScrapering = false;
-                return;
-            }
+                WebBrowser.Invoke(new Action(() =>
+                {
+                    //执行解析网页
+                    DoCommoditys();
+                }));
+            }).ContinueWith(task =>
+            {
+                //执行下一个查询
+                if (QueryStrings == null || QueryIndex >= QueryStrings.Length)
+                {
+                    IsScrapering = false;
+                    return;
+                }
+                WebBrowser.Invoke(new Action(() =>
+                {
+                    DoQuery(QueryStrings[QueryIndex]);
+                }));
+            });
 
-            System.Threading.Thread.Sleep(1000);
-            DoQuery(QueryStrings[QueryIndex]);
-            //} 
         }
-
-        /// <summary>
-        /// 加载时
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void WebBrowser_Navigating(object sender, Gecko.Events.GeckoNavigatingEventArgs e)
-        {
-            SetTitle();
-        }
-
 
         /// <summary>
         /// 设置标题
@@ -305,18 +315,21 @@ namespace Scraper.BAL
             ////var dom = (mshtml.IHTMLDocument3)WebBrowser.Document.DomDocument;
             //var mainDivs = dom.getElementById("main");
 
-
-
-            var main = WebBrowser.Document.GetElementById("main");
-            //var divs = main.Children.GetElementsByName("div"); 
-            //foreach (HtmlElement div in divs)
-            //{
-            //    if (div.GetAttribute("className") == "m-itemlist")
-            //    {
-
-            //    }
-            //}
-
+            var mainsrp_itemlist = WebBrowser.Document.GetElementById("mainsrp-itemlist");
+            var divs = mainsrp_itemlist.FirstChild.ChildNodes[1].ChildNodes[1].ChildNodes;
+ 
+            foreach (var div in divs)
+            {
+                if (div is Gecko.GeckoHtmlElement)
+                {
+                    var links = (div as Gecko.GeckoHtmlElement).GetElementsByTagName("a");
+                    if (links != null && links.Length > 0)
+                    {
+                        (links[0] as Gecko.GeckoHtmlElement).Click(); 
+                    }
+                }
+            }
         }
+         
     }
 }

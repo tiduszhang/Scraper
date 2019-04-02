@@ -42,6 +42,11 @@ namespace Scraper.BAL
         /// </summary>
         public GeckoProxy CurrentProxy { get; set; }
 
+        /// <summary>
+        /// 新建窗口
+        /// </summary>
+        public Func<WebBrowserEx> NewWindowAction { get; set; }
+
         //int index = 0;
 
         /// <summary>
@@ -131,7 +136,11 @@ namespace Scraper.BAL
 
         protected override void OnCreateWindow(GeckoCreateWindowEventArgs e)
         {
-            e.WebBrowser = this;
+            if (NewWindowAction != null)
+            {
+                e.WebBrowser = NewWindowAction();
+            }
+
             base.OnCreateWindow(e);
         }
     }
