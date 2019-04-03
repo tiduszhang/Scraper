@@ -1,4 +1,6 @@
-﻿using MahApps.Metro.Controls;
+﻿using Common;
+using MahApps.Metro.Controls;
+using MVVM.Messaging;
 using Scraper.BAL;
 using System;
 using System.Collections.Generic;
@@ -26,13 +28,30 @@ namespace Scraper
             InitializeComponent();
             this.Loaded += WinCommodityDetial_Loaded;
         }
+
         public CommodityDetialViewModel ViewModel { get; set; }
 
         private void WinCommodityDetial_Loaded(object sender, RoutedEventArgs e)
         {
+            if (this.IsInDesignMode())
+            {
+                return;
+            }
+
             //ViewModel = new CommodityDetialViewModel();
             this.DataContext = ViewModel;
             this.host.Child = ViewModel.WebBrowser;
+
+
+            Messenger.Default.Register<NotificationMessage>(this, message =>
+            {
+                if (message.Key == CommodityDetialViewModel.FindCommodityNode)
+                {
+                    ViewModel.WebBrowser.Stop();
+                    ViewModel.WebBrowser.Dispose();
+                    this.Close();
+                }
+            });
         }
 
 

@@ -97,7 +97,7 @@ namespace Scraper.BAL
         /// </summary>
         public MainViewModel()
         {
-            Messenger.Default.Register<NotificationMessage>(this, ProxieCompleted);
+            Messenger.Default.Register<NotificationMessage>(this, DoMessageSomeThing);
             ProxyViewModel = new ProxyViewModel();
             WebBrowser = new WebBrowserEx();
             WebBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
@@ -156,7 +156,7 @@ namespace Scraper.BAL
         /// 代理加载完成
         /// </summary>
         /// <param name="notificationMessage"></param>
-        private void ProxieCompleted(NotificationMessage notificationMessage)
+        private void DoMessageSomeThing(NotificationMessage notificationMessage)
         {
             if (notificationMessage.Key == ProxyViewModel.ProxieCompleted)
             {
@@ -164,7 +164,14 @@ namespace Scraper.BAL
                 WebBrowser.Proxies = ProxyViewModel.Proxies.ToList();
                 WebBrowser.NewNavigate(Url);
             }
+            else if (notificationMessage.Key == CommodityDetialViewModel.FindCommodityNode)
+            {
+                index++;
+                FindCommodityNodes();
+            }
         }
+
+        private bool Completed { get; set; }
 
         /// <summary>
         /// 加载完成
@@ -173,38 +180,47 @@ namespace Scraper.BAL
         /// <param name="e"></param>
         private void WebBrowser_DocumentCompleted(object sender, Gecko.Events.GeckoDocumentCompletedEventArgs e)
         {
+            if (Completed)
+            {
+                return;
+            }
+            Completed = true;
+
             //WebBrowser.DocumentCompleted -= WebBrowser_DocumentCompleted;
             SetTitle();
             //if (WebBrowser.ReadyState == System.Windows.Forms.WebBrowserReadyState.Complete)
             //{
-             
-            System.Threading.Thread.Sleep(200);
+
+            //System.Threading.Thread.Sleep(200);
             //加载完成 
             if (!IsScrapering)
             {
                 return;
             }
-            Task.Factory.StartNew(() =>
-            {
-                WebBrowser.Invoke(new Action(() =>
-                {
-                    //执行解析网页
-                    DoCommoditys();
-                }));
-            }).ContinueWith(task =>
-            {
-                //执行下一个查询
-                if (QueryStrings == null || QueryIndex >= QueryStrings.Length)
-                {
-                    IsScrapering = false;
-                    return;
-                }
-                WebBrowser.Invoke(new Action(() =>
-                {
-                    DoQuery(QueryStrings[QueryIndex]);
-                }));
-            });
+             
+            //Task.Factory.StartNew(() =>
+            //{
+            //    WebBrowser.Invoke(new Action(() =>
+            //    {
+            //        //执行解析网页
+            //        DoCommoditys();
+            //    }));
+            //}).ContinueWith(task =>
+            //{
+            //    //执行下一个查询
+            //    if (QueryStrings == null || QueryIndex >= QueryStrings.Length)
+            //    {
+            //        IsScrapering = false;
+            //        return;
+            //    }
+            //    WebBrowser.Invoke(new Action(() =>
+            //    {
+            //        DoQuery(QueryStrings[QueryIndex]);
+            //    }));
+            //});
 
+            //执行解析网页
+            DoCommoditys();
         }
 
         /// <summary>
@@ -297,6 +313,8 @@ namespace Scraper.BAL
                 {
                     if (button.GetAttribute("class").Contains("btn-search"))
                     {
+                        Completed = false;
+                        ChildNodes = null;
                         //WebBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
                         (button as Gecko.GeckoHtmlElement).Click();//.("click");
 
@@ -305,7 +323,15 @@ namespace Scraper.BAL
                 }
             }
         }
+        /// <summary>
+        /// 节点列表
+        /// </summary>
+        private Gecko.GeckoNodeCollection ChildNodes { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private uint index { get; set; }
         /// <summary>
         /// 解析搜索列表网页
         /// </summary>
@@ -316,20 +342,62 @@ namespace Scraper.BAL
             //var mainDivs = dom.getElementById("main");
 
             var mainsrp_itemlist = WebBrowser.Document.GetElementById("mainsrp-itemlist");
-            var divs = mainsrp_itemlist.FirstChild.ChildNodes[1].ChildNodes[1].ChildNodes;
- 
-            foreach (var div in divs)
-            {
-                if (div is Gecko.GeckoHtmlElement)
-                {
-                    var links = (div as Gecko.GeckoHtmlElement).GetElementsByTagName("a");
-                    if (links != null && links.Length > 0)
-                    {
-                        (links[0] as Gecko.GeckoHtmlElement).Click(); 
-                    }
-                }
-            }
+            ChildNodes = mainsrp_itemlist.FirstChild.ChildNodes[1].ChildNodes[1].ChildNodes;
+
+            //foreach (var div in divs)
+            //{
+            //    if (div is Gecko.GeckoHtmlElement)
+            //    {
+            //        var links = (div as Gecko.GeckoHtmlElement).GetElementsByTagName("a");
+            //        if (links != null && links.Length > 0)
+            //        {
+            //            (links[0] as Gecko.GeckoHtmlElement).Click();
+            //        }
+            //    }
+            //}
+            index = 0;
+
+            FindCommodityNodes();
         }
-         
+
+        /// <summary>
+        /// 
+        /// </summary> 
+        private void FindCommodityNodes()
+        {
+            if (ChildNodes == null || ChildNodes.Length == 0)
+            {
+                return;
+            }
+
+            try
+            { 
+                //查找下一个商品
+                for (; index < ChildNodes.Length; index++)
+                {
+                    if (ChildNodes[index] is Gecko.GeckoHtmlElement)
+                    {
+                        var links = (ChildNodes[index] as Gecko.GeckoHtmlElement).GetElementsByTagName("a");
+                        if (links != null && links.Length > 0)
+                        {
+                            (links[0] as Gecko.GeckoHtmlElement).Click();
+                            return;
+                        }
+                    }
+                } 
+            }
+            catch (Exception ex)
+            {
+
+            }
+            //执行下一个查询
+            if (QueryStrings == null || QueryIndex >= QueryStrings.Length)
+            {
+                IsScrapering = false;
+                return;
+            }
+
+            DoQuery(QueryStrings[QueryIndex]);
+        }
     }
 }

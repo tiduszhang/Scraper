@@ -1,4 +1,5 @@
 ﻿using Gecko.Events;
+using MVVM.Messaging;
 using MVVM.Model;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace Scraper.BAL
 {
     public class CommodityDetialViewModel : NotifyBaseModel
     {
+        public static readonly string FindCommodityNode = "FindCommodityNode";
+
         public WebBrowserEx WebBrowser { get; set; }
 
         public string Url { get; set; }
@@ -43,12 +46,28 @@ namespace Scraper.BAL
         {
             SetTitle();
         }
-         
+        private bool Completed { get; set; }
         private void WebBrowser_DocumentCompleted(object sender, GeckoDocumentCompletedEventArgs e)
         {
+            if (Completed)
+            {
+                return;
+            }
+            Completed = true;
             SetTitle();
 
             //开始爬数据
+            Task.Factory.StartNew(() =>
+            {
+                System.Threading.Thread.Sleep(5 * 1000);
+                System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
+                {
+                    Messenger.Default.Send(new NotificationMessage
+                    {
+                        Key = CommodityDetialViewModel.FindCommodityNode
+                    });
+                }));
+            });
         }
 
         /// <summary>
@@ -68,11 +87,15 @@ namespace Scraper.BAL
             //{
             //    this.Title = WebBrowser.DocumentTitle + "，当前没有使用代理。";
             //}
-            //if (WebBrowser.Url != null)
-            //{
-            //    this.Title += WebBrowser.Url.ToString();
-            //}
-            this.Title = WebBrowser.DocumentTitle + WebBrowser.Url.ToString();
+            if (WebBrowser.Url != null)
+            {
+                this.Title = WebBrowser.DocumentTitle + WebBrowser.Url.ToString();
+            }
+            else
+            {
+                this.Title = WebBrowser.DocumentTitle;
+            }
+
         }
     }
 }
