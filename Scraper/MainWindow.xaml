@@ -11,6 +11,12 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=model:MainViewModel}" 
         Title="{Binding Title}" TitleCaps="False" >
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button Content="清理Cookie" Command="{Binding ClearCookieCommand}"/>
+            <Button Content="刷新" Command="{Binding RefCommand}"/>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
     <Window.Resources>
         <mvvm:BoolToValueConverter x:Key="boolToValueConverter" TrueValue="停止爬网" FalseValue="开始爬网" />
     </Window.Resources>

@@ -27,9 +27,7 @@ namespace Scraper.BAL
             //ScriptErrorsSuppressed = true;
             Dock = DockStyle.Fill;
             NoDefaultContextMenu = false;
-            Proxies = new List<GeckoProxy>();
-
-            
+            Proxies = new List<GeckoProxy>(); 
         }
 
         /// <summary>

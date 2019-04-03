@@ -41,7 +41,10 @@ namespace Scraper
             //ViewModel = new CommodityDetialViewModel();
             this.DataContext = ViewModel;
             this.host.Child = ViewModel.WebBrowser;
-
+            ViewModel.WebBrowser.NewWindowAction = () =>
+            {
+                return this.ViewModel.WebBrowser;
+            };
 
             Messenger.Default.Register<NotificationMessage>(this, message =>
             {

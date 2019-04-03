@@ -9,8 +9,13 @@
         d:DataContext="{d:DesignInstance Type=model:CommodityDetialViewModel}" 
         mc:Ignorable="d"
         Title="{Binding Title}" TitleCaps="False"  >
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button Content="刷新" Command="{Binding RefCommand}"/>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
     <Grid>
-        <WindowsFormsHost  Name="host" Margin="-5" >
+        <WindowsFormsHost  Name="host">
             <!--<model:WebBrowserEx x:Name="webBrowser" Dock="Fill" />-->
         </WindowsFormsHost>
     </Grid>

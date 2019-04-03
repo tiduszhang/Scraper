@@ -1,4 +1,5 @@
 ﻿using Common;
+using Gecko;
 using MVVM.Messaging;
 using MVVM.Model;
 using MVVM.ViewModel;
@@ -197,7 +198,7 @@ namespace Scraper.BAL
             {
                 return;
             }
-             
+
             //Task.Factory.StartNew(() =>
             //{
             //    WebBrowser.Invoke(new Action(() =>
@@ -361,6 +362,36 @@ namespace Scraper.BAL
         }
 
         /// <summary>
+        /// 刷新
+        /// </summary>
+        public ICommand RefCommand
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+
+                    WebBrowser.Reload();
+                });
+            }
+        }
+
+        /// <summary>
+        /// 清理Cookie
+        /// </summary>
+        public ICommand ClearCookieCommand
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    CookieManager.RemoveAll();
+                    WebBrowser.Reload();
+                });
+            }
+        }
+
+        /// <summary>
         /// 
         /// </summary> 
         private void FindCommodityNodes()
@@ -371,7 +402,7 @@ namespace Scraper.BAL
             }
 
             try
-            { 
+            {
                 //查找下一个商品
                 for (; index < ChildNodes.Length; index++)
                 {
@@ -384,11 +415,12 @@ namespace Scraper.BAL
                             return;
                         }
                     }
-                } 
+                }
             }
             catch (Exception ex)
             {
-
+                ex.ToString();
+                return;
             }
             //执行下一个查询
             if (QueryStrings == null || QueryIndex >= QueryStrings.Length)

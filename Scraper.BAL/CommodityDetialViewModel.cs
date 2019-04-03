@@ -1,11 +1,13 @@
 ﻿using Gecko.Events;
 using MVVM.Messaging;
 using MVVM.Model;
+using MVVM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Scraper.BAL
 {
@@ -57,9 +59,9 @@ namespace Scraper.BAL
             SetTitle();
 
             //开始爬数据
-            Task.Factory.StartNew(() =>
+            System.Threading.ThreadPool.QueueUserWorkItem(state =>
             {
-                System.Threading.Thread.Sleep(5 * 1000);
+                System.Threading.Thread.Sleep(new Random().Next(5, 10) * 1000);
                 System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
                 {
                     Messenger.Default.Send(new NotificationMessage
@@ -96,6 +98,21 @@ namespace Scraper.BAL
                 this.Title = WebBrowser.DocumentTitle;
             }
 
+        }
+
+        /// <summary>
+        /// 刷新
+        /// </summary>
+        public ICommand RefCommand
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+
+                    WebBrowser.Reload();
+                });
+            }
         }
     }
 }
