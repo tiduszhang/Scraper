@@ -23,14 +23,25 @@ namespace Scraper
     /// </summary>
     public partial class WinCommodityDetial : MetroWindow
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public WinCommodityDetial()
         {
             InitializeComponent();
             this.Loaded += WinCommodityDetial_Loaded;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public CommodityDetialViewModel ViewModel { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void WinCommodityDetial_Loaded(object sender, RoutedEventArgs e)
         {
             if (this.IsInDesignMode())
@@ -50,7 +61,7 @@ namespace Scraper
             {
                 if (message.Key == CommodityDetialViewModel.FindCommodityNode)
                 {
-                    ViewModel.WebBrowser.Stop();
+                    //ViewModel.WebBrowser.Stop();
                     ViewModel.WebBrowser.Dispose();
                     this.Close();
                 }

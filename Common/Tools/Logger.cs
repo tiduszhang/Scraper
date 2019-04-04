@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,34 +13,32 @@ namespace Common
     /// </summary>
     public static class Logger
     {
-        ///// <summary>
-        ///// 日志对象
-        ///// </summary>
-        //private static log4net.ILog log = null;
+        private static log4net.ILog log = null;
 
         /// <summary>
         /// 写入日志 
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="path"></param>
         /// <param name="level"></param>
-        public static void WriteToLog(this string value, string path = "", log4net.Core.Level level = null)
-        {  
-    		log4net.ILog log = null;
+        public static void WriteToLog(this string value, log4net.Core.Level level = null)
+        {
 
-            log4net.GlobalContext.Properties["LogUrl"] = WorkPath.ApplicationWorkPath + "\\logs\\" + path;
-
-            string config = WorkPath.ExecPath + @"\Log4net.config";
+            string path = WorkPath.ExecPath + @"\Config\Log4net.config";
             if (File.Exists(path))
             {
-                log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo(config));
-                log = log4net.LogManager.GetLogger("");
+                if (log == null)
+                {
+                    log4net.GlobalContext.Properties["LogUrl"] = WorkPath.ApplicationWorkPath + @"\Logs\";
+                    log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo(path));
+                    log = log4net.LogManager.GetLogger("lognet");
+                }
             }
-            else
+
+            if (log == null)
             {
-                log = log4net.LogManager.GetLogger("");
+                return;
             }
-			
+
             if (level == log4net.Core.Level.Debug)
             {
                 log.Debug(value);
@@ -64,17 +63,6 @@ namespace Common
             {
                 log.Info(value);
             }
-            //try
-            //{
-            //    using (StreamWriter s = System.IO.File.AppendText(System.IO.Path.GetFullPath(Constant.ApplicationWorkPath + @"\Log.log")))
-            //    {
-            //        s.WriteLine(value);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    ex.ToString();
-            //}
         }
     }
 }

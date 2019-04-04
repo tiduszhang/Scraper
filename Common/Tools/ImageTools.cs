@@ -118,7 +118,7 @@ namespace Common
             }
             catch (Exception ex)
             {
-                ("图片内存转换成二进制出现异常，异常信息：" + ex.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                ("图片内存转换成二进制出现异常，异常信息：" + ex.ToString()).WriteToLog( log4net.Core.Level.Error);
                 bValue = null;
             }
 
@@ -141,7 +141,7 @@ namespace Common
             }
             catch (Exception ex)
             {
-                ("二进制转换成图片出现异常，异常信息：" + ex.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                ("二进制转换成图片出现异常，异常信息：" + ex.ToString()).WriteToLog(log4net.Core.Level.Error);
                 image = null;
             }
 
@@ -216,7 +216,7 @@ namespace Common
 
                 if (bFile == null || bFile.Length <= 0)
                 {
-                    ("不能为空文件[" + fileName + "]增加水印。").WriteToLog("", log4net.Core.Level.Error);
+                    ("不能为空文件[" + fileName + "]增加水印。").WriteToLog( log4net.Core.Level.Error);
                     return;
                 }
                 var img = bFile.ToImage();
@@ -246,7 +246,7 @@ namespace Common
             }
             catch (Exception ex)
             {
-                ("[" + fileName + "]增加水印出现异常，异常信息：" + ex.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                ("[" + fileName + "]增加水印出现异常，异常信息：" + ex.ToString()).WriteToLog( log4net.Core.Level.Error);
             }
 
             GC.Collect();

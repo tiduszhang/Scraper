@@ -588,7 +588,7 @@ namespace Common
                 }
                 catch
                 {
-                    "删除自定义纸张时发生错误！".WriteToLog("", log4net.Core.Level.Error);
+                    "删除自定义纸张时发生错误！".WriteToLog( log4net.Core.Level.Error);
                     //Pub.WinForm.Msg.Warning("删除自定义纸张时发生错误！");
                 }
             }
@@ -775,7 +775,7 @@ namespace Common
             else
             {
                 int rc = GetLastError();
-                ("获取默认打印机失败！错误代号：" + rc.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                ("获取默认打印机失败！错误代号：" + rc.ToString()).WriteToLog( log4net.Core.Level.Error);
                 return string.Empty;
             }
         }

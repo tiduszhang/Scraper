@@ -78,7 +78,7 @@ namespace Common
         public static string DownloadString(this Uri value, object data = null, string user = "", string pass = "", string head = "", bool fast = false)
         {
             string result = "";
-            ("请求地址：" + value.ToString()).WriteToLog("", log4net.Core.Level.Debug);
+            ("请求地址：" + value.ToString()).WriteToLog(log4net.Core.Level.Debug);
             try
             {
                 using (var webClient = value.CreatedWebClient("application/json", user, pass, head, fast))
@@ -105,18 +105,18 @@ namespace Common
             {
                 if (data == null || String.IsNullOrWhiteSpace(data.ToString()))
                 {
-                    ("请求地址：" + value.ToString() + "出现异常！" + System.Environment.NewLine + ex.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                    ("请求地址：" + value.ToString() + "出现异常！" + System.Environment.NewLine + ex.ToString()).WriteToLog( log4net.Core.Level.Error);
                 }
                 else
                 {
-                    ("请求地址：" + value.ToString() + "出现异常！提交数据：" + data + System.Environment.NewLine + ex.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                    ("请求地址：" + value.ToString() + "出现异常！提交数据：" + data + System.Environment.NewLine + ex.ToString()).WriteToLog( log4net.Core.Level.Error);
                 }
-                result.Trim().WriteToLog("", log4net.Core.Level.Debug);
+                result.Trim().WriteToLog(log4net.Core.Level.Debug);
                 result = "";
                 throw ex;
             }
             //GC.Collect();
-            ("服务器返回：" + result.Trim()).WriteToLog("", log4net.Core.Level.Debug);
+            ("服务器返回：" + result.Trim()).WriteToLog(log4net.Core.Level.Debug);
             return result.Trim();
         }
 
@@ -131,7 +131,7 @@ namespace Common
         public static string UploadFile(this Uri value, string fileName, string user = "", string pass = "", string head = "")
         {
             string result = "";
-            ("请求上传文件：" + value.ToString()).WriteToLog("", log4net.Core.Level.Debug);
+            ("请求上传文件：" + value.ToString()).WriteToLog( log4net.Core.Level.Debug);
             try
             {
                 using (var webClient = value.CreatedWebClient("application/octet-stream", user, pass, head, false))
@@ -142,11 +142,11 @@ namespace Common
             }
             catch (Exception ex)
             {
-                ("上传过程中出现异常：" + value.ToString() + "出现异常！" + System.Environment.NewLine + ex.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                ("上传过程中出现异常：" + value.ToString() + "出现异常！" + System.Environment.NewLine + ex.ToString()).WriteToLog(log4net.Core.Level.Error);
                 throw ex;
             }
             //GC.Collect();
-            ("服务器返回：" + result.Trim()).WriteToLog("", log4net.Core.Level.Debug);
+            ("服务器返回：" + result.Trim()).WriteToLog(log4net.Core.Level.Debug);
             return result;
         }
 
@@ -175,7 +175,7 @@ namespace Common
         /// <param name="head"></param>
         public static WebClient UploadFileAsync(this Uri value, string fileName, string user = "", string pass = "", string head = "")
         {
-            ("请求上传文件地址：" + value.ToString()).WriteToLog("", log4net.Core.Level.Debug);
+            ("请求上传文件地址：" + value.ToString()).WriteToLog(log4net.Core.Level.Debug);
             var webClient = value.CreatedWebClient("application/octet-stream", user, pass, head, false);
             try
             {
@@ -186,7 +186,7 @@ namespace Common
                     {
                         if (e.Error != null)
                         {
-                            ("上传过程中出现异常：" + value.ToString() + "出现异常！" + System.Environment.NewLine + e.Error.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                            ("上传过程中出现异常：" + value.ToString() + "出现异常！" + System.Environment.NewLine + e.Error.ToString()).WriteToLog( log4net.Core.Level.Error);
                         }
                         webClient.Dispose();
                     }
@@ -198,7 +198,7 @@ namespace Common
             }
             catch (Exception ex)
             {
-                ("请求上传文件地址：" + value.ToString() + "出现异常！" + System.Environment.NewLine + ex.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                ("请求上传文件地址：" + value.ToString() + "出现异常！" + System.Environment.NewLine + ex.ToString()).WriteToLog( log4net.Core.Level.Error);
             }
             return webClient;
         }
@@ -225,7 +225,7 @@ namespace Common
         /// <param name="head"></param>
         public static void DownloadFile(this Uri value, string fileName, string user = "", string pass = "", string head = "")
         {
-            ("请求下载文件地址：" + value.ToString()).WriteToLog("",log4net.Core.Level.Debug);
+            ("请求下载文件地址：" + value.ToString()).WriteToLog(log4net.Core.Level.Debug);
             try
             {
                 using (var webClient = value.CreatedWebClient("application/octet-stream", user, pass, head, false))
@@ -235,7 +235,7 @@ namespace Common
             }
             catch (Exception ex)
             {
-                ("下载过程中出现异常：" + value.ToString() + "出现异常！" + System.Environment.NewLine + ex.ToString()).WriteToLog("",log4net.Core.Level.Error);
+                ("下载过程中出现异常：" + value.ToString() + "出现异常！" + System.Environment.NewLine + ex.ToString()).WriteToLog(log4net.Core.Level.Error);
                 throw ex;
             }
         }
@@ -264,7 +264,7 @@ namespace Common
         /// <param name="head"></param>
         public static byte[] DownloadData(this Uri value, string user = "", string pass = "", string head = "")
         {
-            ("请求下载文件地址：" + value.ToString()).WriteToLog("", log4net.Core.Level.Debug);
+            ("请求下载文件地址：" + value.ToString()).WriteToLog(log4net.Core.Level.Debug);
 
             byte[] bData = null;
             try
@@ -275,7 +275,7 @@ namespace Common
             }
             catch (Exception ex)
             {
-                ("下载过程中出现异常：" + value.ToString() + "出现异常！" + System.Environment.NewLine + ex.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                ("下载过程中出现异常：" + value.ToString() + "出现异常！" + System.Environment.NewLine + ex.ToString()).WriteToLog(log4net.Core.Level.Error);
                 throw ex;
             }
             return bData;
@@ -304,7 +304,7 @@ namespace Common
         /// <param name="pass"></param> 
         public static WebClient DownloadFileAsync(this Uri value, string fileName, string user = "", string pass = "", string head = "")
         {
-            ("请求下载文件地址：" + value.ToString()).WriteToLog("", log4net.Core.Level.Debug);
+            ("请求下载文件地址：" + value.ToString()).WriteToLog(log4net.Core.Level.Debug);
             var webClient = value.CreatedWebClient("application/octet-stream", user, pass, head, false);
             try
             {
@@ -315,7 +315,7 @@ namespace Common
                     {
                         if (e.Error != null)
                         {
-                            ("下载过程中出现异常：" + value.ToString() + "出现异常！" + System.Environment.NewLine + e.Error.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                            ("下载过程中出现异常：" + value.ToString() + "出现异常！" + System.Environment.NewLine + e.Error.ToString()).WriteToLog( log4net.Core.Level.Error);
                         }
                         webClient.Dispose();
                     }
@@ -327,7 +327,7 @@ namespace Common
             }
             catch (Exception ex)
             {
-                ("请求下载文件地址：" + value.ToString() + "出现异常！" + System.Environment.NewLine + ex.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                ("请求下载文件地址：" + value.ToString() + "出现异常！" + System.Environment.NewLine + ex.ToString()).WriteToLog( log4net.Core.Level.Error);
             }
             return webClient;
         }

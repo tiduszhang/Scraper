@@ -65,7 +65,7 @@ namespace Common
             }
             catch (Exception ex)
             {
-                ex.ToString().WriteToLog("", log4net.Core.Level.Info);
+                ex.ToString().WriteToLog( log4net.Core.Level.Info);
             }
         }
 
@@ -108,7 +108,7 @@ namespace Common
             }
             catch (Exception ex)
             {
-                ex.ToString().WriteToLog("", log4net.Core.Level.Error);
+                ex.ToString().WriteToLog( log4net.Core.Level.Error);
                 System.Windows.MessageBox.Show("系统异常，请联系管理员！", "提示信息", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
                 System.Environment.Exit(System.Environment.ExitCode);
             }

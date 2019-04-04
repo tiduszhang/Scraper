@@ -146,7 +146,7 @@ namespace Common
                     }
                     catch (Exception ex)
                     {
-                        ex.ToString().WriteToLog("", log4net.Core.Level.Error);
+                        ex.ToString().WriteToLog(log4net.Core.Level.Error);
                     }
                     finally
                     { 
@@ -156,7 +156,7 @@ namespace Common
             }
             catch (Exception ex)
             {
-                ex.ToString().WriteToLog("", log4net.Core.Level.Error);
+                ex.ToString().WriteToLog( log4net.Core.Level.Error);
             }
             finally
             {

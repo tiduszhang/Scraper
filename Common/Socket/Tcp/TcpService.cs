@@ -162,7 +162,7 @@ namespace Common
                     }
                     catch (Exception ex)
                     {
-                        ("服务器监听异常，异常信息：" + ex.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                        ("服务器监听异常，异常信息：" + ex.ToString()).WriteToLog( log4net.Core.Level.Error);
                     }
                     finally
                     {
@@ -179,7 +179,7 @@ namespace Common
             }
             catch (Exception ex)
             {
-                ("服务器监听异常，异常信息：" + ex.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                ("服务器监听异常，异常信息：" + ex.ToString()).WriteToLog(log4net.Core.Level.Error);
             }
             finally
             {
@@ -189,7 +189,7 @@ namespace Common
                 }
                 catch (Exception ex)
                 {
-                    ("服务器监听异常停止，异常信息：" + ex.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                    ("服务器监听异常停止，异常信息：" + ex.ToString()).WriteToLog( log4net.Core.Level.Error);
                 }
             }
         }
