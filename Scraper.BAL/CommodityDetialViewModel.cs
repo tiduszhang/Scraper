@@ -132,8 +132,7 @@ namespace Scraper.BAL
             get
             {
                 return new DelegateCommand(() =>
-                {
-
+                { 
                     WebBrowser.Reload();
                 });
             }
