@@ -103,7 +103,7 @@ namespace Scraper.BAL
             WebBrowser = new WebBrowserEx();
             WebBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             WebBrowser.ProgressChanged += WebBrowser_ProgressChanged;
-
+            Title = "";
         }
 
         /// <summary>

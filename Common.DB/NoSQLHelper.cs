@@ -87,7 +87,7 @@ namespace Common
                 }
                 catch (Exception ex)
                 {
-                    ("数据库出错，异常信息：" + ex.ToString()).WriteToLog("", log4net.Core.Level.Error);
+                    ("数据库出错，异常信息：" + ex.ToString()).WriteToLog(log4net.Core.Level.Error);
                     engine.Heap.Close();
                     System.Threading.Thread.Sleep(100);
                     System.IO.File.Move(dbFile, (dbFile + "_" + DateTime.Now.ToString("yyyyMMhhddmmss") + ".bak"));

@@ -27,7 +27,7 @@ namespace Scraper.BAL
             //ScriptErrorsSuppressed = true;
             Dock = DockStyle.Fill;
             NoDefaultContextMenu = false;
-            Proxies = new List<GeckoProxy>(); 
+            Proxies = new List<GeckoProxy>();
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Scraper.BAL
         /// <summary>
         /// 新建窗口
         /// </summary>
-        public Func<WebBrowserEx> NewWindowAction { get; set; }
+        public Action<WebBrowserEx> NewWindowAction { get; set; }
 
         //int index = 0;
 
@@ -124,7 +124,7 @@ namespace Scraper.BAL
 
         protected override void OnDocumentTitleChanged(EventArgs e)
         {
-            base.OnDocumentTitleChanged(e); 
+            base.OnDocumentTitleChanged(e);
         }
 
         private void Window_Error(object sender, HtmlElementErrorEventArgs e)
@@ -132,14 +132,22 @@ namespace Scraper.BAL
             e.Handled = true;
         }
 
+        private WebBrowserEx ChildWebBrowser { get; set; }
+
         protected override void OnCreateWindow(GeckoCreateWindowEventArgs e)
         {
+            if (ChildWebBrowser == null)
+            {
+                ChildWebBrowser = new WebBrowserEx();
+            }
+            e.WebBrowser = ChildWebBrowser;
             if (NewWindowAction != null)
             {
-                e.WebBrowser = NewWindowAction();
+                NewWindowAction(ChildWebBrowser);
             }
-
             base.OnCreateWindow(e);
         }
+
+
     }
 }

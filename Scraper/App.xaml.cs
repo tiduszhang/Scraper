@@ -30,7 +30,7 @@ namespace Scraper
             Gecko.GeckoPreferences.User["intl.accept_languages"] = "zh-CN,zh;q=0.9,en;q=0.8";//不设置的话默认是英文区
 
             NoSQLHelper.DBPath = WorkPath.ExecPath;
-
+             
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             System.Threading.Tasks.TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
@@ -117,7 +117,6 @@ namespace Scraper
         {
             ("当用户结束时发生 Windows 通过注销或关闭操作系统的会话。").WriteToLog(log4net.Core.Level.Info);
             base.OnSessionEnding(e);
-        }
-
+        } 
     }
 }

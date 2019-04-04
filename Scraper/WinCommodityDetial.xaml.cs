@@ -4,6 +4,7 @@ using MVVM.Messaging;
 using Scraper.BAL;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,23 +52,34 @@ namespace Scraper
 
             //ViewModel = new CommodityDetialViewModel();
             this.DataContext = ViewModel;
-            this.host.Child = ViewModel.WebBrowser;
-            ViewModel.WebBrowser.NewWindowAction = () =>
+            ViewModel.WebBrowser.NewWindowAction = WebBrowserEx =>
             {
-                return this.ViewModel.WebBrowser;
+                this.ViewModel.WebBrowser = WebBrowserEx;
             };
+            this.host.Child = ViewModel.WebBrowser;
 
-            Messenger.Default.Register<NotificationMessage>(this, message =>
-            {
-                if (message.Key == CommodityDetialViewModel.FindCommodityNode)
-                {
-                    //ViewModel.WebBrowser.Stop();
-                    ViewModel.WebBrowser.Dispose();
-                    this.Close();
-                }
-            });
+            Messenger.Default.Register<NotificationMessage>(this, DoMessageSomeThing);
         }
 
+        /// <summary>
+        /// 处理消息
+        /// </summary>
+        /// <param name="notificationMessage"></param>
+        private void DoMessageSomeThing(NotificationMessage notificationMessage)
+        {
+            if (notificationMessage.Key == CommodityDetialViewModel.FindCommodityNode)
+            {
+                this.Close();
+            }
+        }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            //Messenger.Default.Unregister<NotificationMessage>(this, DoMessageSomeThing);
+            e.Cancel = true;
+            base.OnClosing(e);
+            this.Hide();
+        }
+         
     }
 }

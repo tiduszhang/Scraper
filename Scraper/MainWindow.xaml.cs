@@ -34,6 +34,7 @@ namespace Scraper
 
         private MainViewModel ViewModel { get; set; }
 
+        private WinCommodityDetial WinCommodityDetial = new WinCommodityDetial();
         /// <summary>
         /// 
         /// </summary>
@@ -50,13 +51,16 @@ namespace Scraper
             this.DataContext = ViewModel;
 
             this.host.Child = ViewModel.WebBrowser;
-            ViewModel.WebBrowser.NewWindowAction = () =>
+            ViewModel.WebBrowser.NewWindowAction = WebBrowserEx =>
             {
-                var WinCommodityDetial = new WinCommodityDetial();
-                WinCommodityDetial.ViewModel = new CommodityDetialViewModel(); 
+                if (WinCommodityDetial.ViewModel == null)
+                {
+                    WinCommodityDetial.ViewModel = new CommodityDetialViewModel()
+                    {
+                        WebBrowser = WebBrowserEx
+                    };
+                }
                 WinCommodityDetial.Show();
-
-                return WinCommodityDetial.ViewModel.WebBrowser;
             };
             ViewModel.Navigate();
         }

@@ -15,7 +15,24 @@ namespace Scraper.BAL
     {
         public static readonly string FindCommodityNode = "FindCommodityNode";
 
-        public WebBrowserEx WebBrowser { get; set; }
+        private WebBrowserEx _WebBrowser = null;
+        public WebBrowserEx WebBrowser
+        {
+            get
+            {
+                return _WebBrowser;
+            }
+            set
+            {
+                _WebBrowser = value;
+                if (isNotIni)
+                {
+                    _WebBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
+                    _WebBrowser.ProgressChanged += WebBrowser_ProgressChanged;
+                }
+                isNotIni = false;
+            }
+        }
 
         public string Url { get; set; }
 
@@ -34,14 +51,13 @@ namespace Scraper.BAL
             }
         }
 
+        private bool isNotIni = true;
         /// <summary>
         /// 
         /// </summary>
         public CommodityDetialViewModel()
         {
-            WebBrowser = new WebBrowserEx();
-            WebBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
-            WebBrowser.ProgressChanged += WebBrowser_ProgressChanged;
+            Title = "";
         }
 
         private void WebBrowser_ProgressChanged(object sender, Gecko.GeckoProgressEventArgs e)
@@ -61,14 +77,22 @@ namespace Scraper.BAL
             //开始爬数据
             System.Threading.ThreadPool.QueueUserWorkItem(state =>
             {
-                System.Threading.Thread.Sleep(new Random().Next(5, 10) * 1000);
-                System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
+                try
                 {
-                    Messenger.Default.Send(new NotificationMessage
+                    System.Threading.Thread.Sleep(new Random().Next(5, 10) * 1000);
+                    System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
                     {
-                        Key = CommodityDetialViewModel.FindCommodityNode
-                    });
-                }));
+                        Messenger.Default.Send(new NotificationMessage
+                        {
+                            Key = CommodityDetialViewModel.FindCommodityNode
+                        });
+                        Completed = false;
+                    })); 
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                }
             });
         }
 
